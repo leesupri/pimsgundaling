@@ -1,0 +1,1188 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu Makanan &amp; Minuman | Gundaling Farmstead Berastagi</title>
+  <meta name="description" content="Menu lengkap Gundaling Farmstead — masakan Karo, pizza wood-fire, steak, keju artisan, gelato, dan lebih banyak lagi. Farm to table Berastagi.">
+  <link rel="canonical" href="https://pimsgundaling.com/Restaurant.html">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,400&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'farm': { 50:'#f0f7ef',100:'#d8ecda',200:'#b3d9b7',300:'#82be89',400:'#4a9c56',500:'#2C5F2D',600:'#1E4B1F',700:'#1E2F1C',800:'#162318',900:'#0e1810' },
+            'earth': { 50:'#fdf8f3',100:'#f9f1e7',200:'#F9F6EF',300:'#E6D5B8',400:'#c4a882',500:'#a0845e',600:'#7B4B2D',700:'#5c3620',800:'#3d2414',900:'#1f120a' },
+          },
+          fontFamily: { 'display': ['"Playfair Display"','Georgia','serif'], 'body': ['Nunito','sans-serif'] },
+        }
+      }
+    }
+  </script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body { font-family: 'Nunito', sans-serif; color: #1f120a; overflow-x: hidden; }
+    :focus-visible { outline: 2px solid #4a9c56; outline-offset: 2px; }
+
+    /* ── Animations ── */
+    @media (prefers-reduced-motion: no-preference) {
+      @keyframes floatMascot { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+      @keyframes walkAcross  { from{left:-120px} to{left:100vw} }
+      @keyframes bodyBob     { 0%,100%{transform:scaleY(1)} 50%{transform:scaleY(1.03)} }
+      @keyframes flame       { 0%,100%{opacity:1;transform:scaleY(1) skewX(0)} 40%{opacity:.85;transform:scaleY(1.06) skewX(-2deg)} 70%{transform:scaleY(.94) skewX(2deg)} }
+      @keyframes fadein      { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:none} }
+      .mascot-float  { animation: floatMascot 3.6s ease-in-out infinite; }
+      .mascot-walk   { position:absolute; bottom:.375rem; animation: walkAcross 14s linear infinite; }
+      .mascot-walk img { transform-origin:bottom center; animation: bodyBob .4s ease-in-out infinite alternate; }
+      .flame         { animation: flame .45s ease-in-out infinite; }
+    }
+
+    /* ── Scroll reveal ── */
+    .rv { opacity:0; transform:translateY(24px); transition:opacity .65s ease-out, transform .65s ease-out; }
+    .rv.visible { opacity:1; transform:none; }
+    .rv-d1{transition-delay:.1s} .rv-d2{transition-delay:.2s} .rv-d3{transition-delay:.3s}
+
+    /* ── Category accent colors (top border) ── */
+    .cat-bar-appetizers { background:#c4a882; }
+    .cat-bar-karo       { background:#7B4B2D; }
+    .cat-bar-western    { background:#3d2414; }
+    .cat-bar-pizza      { background:#c2410c; }  /* orange-700 */
+    .cat-bar-pasta      { background:#a16207; }  /* yellow-700 */
+    .cat-bar-desserts   { background:#9d174d; }  /* pink-800 */
+    .cat-bar-gelato     { background:#db2777; }  /* pink-600 */
+    .cat-bar-drinks     { background:#0284c7; }  /* sky-600 */
+    .cat-bar-cheese     { background:#7B4B2D; }
+
+    /* ── Category section header pill colors ── */
+    .cat-pill-appetizers { background:#FFF7ED; color:#9a3412; border-color:#fed7aa; }
+    .cat-pill-karo       { background:#FEF3C7; color:#92400e; border-color:#fcd34d; }
+    .cat-pill-western    { background:#1c1917; color:#fff; border-color:#44403c; }
+    .cat-pill-pizza      { background:#FFF7ED; color:#c2410c; border-color:#fdba74; }
+    .cat-pill-pasta      { background:#FEFCE8; color:#713f12; border-color:#fde047; }
+    .cat-pill-desserts   { background:#FDF2F8; color:#831843; border-color:#f9a8d4; }
+    .cat-pill-gelato     { background:#FFF0F6; color:#9d174d; border-color:#fbcfe8; }
+    .cat-pill-drinks     { background:#F0F9FF; color:#075985; border-color:#7dd3fc; }
+    .cat-pill-cheese     { background:#FFFBEB; color:#92400e; border-color:#fcd34d; }
+
+    /* ── Menu image card ── */
+    .menu-card { transition: transform .25s ease, box-shadow .25s ease; }
+    .menu-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,.12); }
+
+    /* ── Image slot: reserves space, shows colour fallback on error ── */
+    .img-slot {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+      background: #E6D5B8;      /* earth-300 fallback */
+    }
+    .img-slot img {
+      position: absolute; inset:0;
+      width:100%; height:100%;
+      object-fit: cover;
+      transition: transform .4s ease;
+    }
+    .menu-card:hover .img-slot img { transform: scale(1.04); }
+    /* When image fails, placeholder is visible */
+    .img-slot.img-error img { display: none; }
+    .img-slot.img-error::after {
+      content: attr(data-label);
+      position: absolute; inset:0;
+      display:flex; align-items:center; justify-content:center;
+      font-family:'Nunito',sans-serif; font-size:.7rem; font-weight:600;
+      color:#a0845e; letter-spacing:.06em; text-transform:uppercase;
+      padding:1rem; text-align:center; word-break:break-word;
+    }
+
+    /* ── Sticky category nav ── */
+    .cat-nav { scrollbar-width:none; -ms-overflow-style:none; }
+    .cat-nav::-webkit-scrollbar { display:none; }
+    .cat-btn.active { background:#2C5F2D; color:#fff; border-color:#2C5F2D; }
+
+    /* ── Drink type header ── */
+    .drink-type { font-family:'Playfair Display',serif; font-size:1.1rem; font-weight:700; color:#3d2414; margin-bottom:.75rem; padding-bottom:.5rem; border-bottom:2px solid #E6D5B8; }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar{width:5px} ::-webkit-scrollbar-track{background:#f0f7ef} ::-webkit-scrollbar-thumb{background:#2C5F2D;border-radius:3px}
+
+    /* ── Hero bg ── */
+    .hero-restaurant { background-image:url('images/restaurant/story.jpg'); background-size:cover; background-position:center; }
+  </style>
+</head>
+<body class="font-body">
+
+<!-- ══════════════════ NAV ══════════════════ -->
+<nav x-data="{scrolled:false,open:false,init(){window.addEventListener('scroll',()=>{this.scrolled=window.scrollY>60},{passive:true})}}"
+     :class="scrolled?'bg-farm-700/95 backdrop-blur-md shadow-lg py-2':'bg-transparent py-4'"
+     class="fixed top-0 w-full z-50 transition-all duration-300 px-6 lg:px-12 flex items-center justify-between">
+
+  <a href="index.html"><img src="images/logos/Logo_GUNDALING_2-color_tall_on-white.png" alt="Gundaling Farmstead" class="h-12 brightness-0 invert transition-all" :style="scrolled?'height:2.5rem':'height:3rem'"></a>
+
+  <ul class="hidden lg:flex items-center gap-8">
+    <li><a href="index.html"      class="text-white/75 hover:text-white font-semibold text-sm tracking-wide uppercase transition-colors">Home</a></li>
+    <li><a href="Restaurant.html" class="text-white border-b-2 border-farm-300 font-bold text-sm tracking-wide uppercase">Restaurant</a></li>
+    <li><a href="farm.html"       class="text-white/75 hover:text-white font-semibold text-sm tracking-wide uppercase transition-colors">Farm</a></li>
+    <li><a href="promo.html"      class="text-white/75 hover:text-white font-semibold text-sm tracking-wide uppercase transition-colors">Promo &amp; Shop</a></li>
+    <li><a href="about.html"      class="text-white/75 hover:text-white font-semibold text-sm tracking-wide uppercase transition-colors">About</a></li>
+    <li><a href="contact.html"    class="text-white/75 hover:text-white font-semibold text-sm tracking-wide uppercase transition-colors">Contact</a></li>
+  </ul>
+
+  <div class="flex items-center gap-3">
+    <a href="#reservation" class="hidden lg:inline-flex items-center gap-1.5 bg-farm-400 hover:bg-earth-600 text-white font-bold text-sm px-5 py-2 rounded-full transition-all cursor-pointer">
+      Reservasi
+    </a>
+    <button @click="open=!open" class="lg:hidden text-white p-2 cursor-pointer" aria-label="Menu">
+      <svg x-show="!open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      <svg x-show="open"  class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+    </button>
+  </div>
+
+  <div x-show="open" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0"
+       class="absolute top-full left-0 w-full bg-farm-700 shadow-2xl lg:hidden">
+    <ul class="flex flex-col px-6 py-5 gap-4">
+      <li><a href="index.html"      @click="open=false" class="block text-white/80 font-semibold text-sm tracking-wide uppercase">Home</a></li>
+      <li><a href="Restaurant.html" @click="open=false" class="block text-white font-bold text-sm tracking-wide uppercase border-b border-farm-500 pb-2">Restaurant</a></li>
+      <li><a href="farm.html"       @click="open=false" class="block text-white/80 font-semibold text-sm tracking-wide uppercase">Farm</a></li>
+      <li><a href="promo.html"      @click="open=false" class="block text-white/80 font-semibold text-sm tracking-wide uppercase">Promo &amp; Shop</a></li>
+      <li><a href="about.html"      @click="open=false" class="block text-white/80 font-semibold text-sm tracking-wide uppercase">About</a></li>
+      <li><a href="contact.html"    @click="open=false" class="block text-white/80 font-semibold text-sm tracking-wide uppercase">Contact</a></li>
+      <li class="pt-1"><a href="#reservation" @click="open=false" class="block text-center bg-farm-400 text-white font-bold text-sm px-5 py-3 rounded-full cursor-pointer">Reservasi</a></li>
+    </ul>
+  </div>
+</nav>
+
+
+<!-- ══════════════════ HERO ══════════════════ -->
+<section class="hero-restaurant relative min-h-[60vh] flex items-end">
+  <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/40"></div>
+
+  <!-- Decorative flames -->
+  <div class="absolute top-1/2 right-12 lg:right-28 -translate-y-1/2 hidden lg:flex flex-col items-center opacity-50 pointer-events-none select-none">
+    <div class="flame w-6 h-12 bg-gradient-to-t from-orange-600 via-yellow-400 to-orange-200 rounded-t-full rounded-b-lg origin-bottom"></div>
+    <div class="flame w-4 h-8  bg-gradient-to-t from-orange-500 via-yellow-300 to-white rounded-t-full -mt-2 ml-4 origin-bottom" style="animation-delay:.18s"></div>
+    <div class="flame w-5 h-10 bg-gradient-to-t from-red-600 via-orange-400 to-yellow-200 rounded-t-full -mt-3 -ml-5 origin-bottom" style="animation-delay:.35s"></div>
+  </div>
+
+  <div class="relative z-10 w-full max-w-6xl mx-auto px-6 lg:px-12 pb-14 lg:pb-20">
+    <div class="max-w-2xl">
+      <span class="font-body text-farm-300 text-xs uppercase tracking-widest font-bold">Open Kitchen · Wood-Fire Oven · Farm to Table</span>
+      <h1 class="font-display text-4xl lg:text-6xl font-bold text-white mt-3 mb-4 leading-tight">
+        Every Dish Begins<br><span class="text-farm-300">in Our Garden.</span>
+      </h1>
+      <p class="font-body text-white/75 text-lg mb-8 leading-relaxed">Menu kami berubah setiap musim — mengikuti apa yang tumbuh hari ini dari kebun dan kandang kami sendiri.</p>
+      <div class="flex flex-wrap gap-4">
+        <a href="#menu" class="inline-flex items-center gap-2 bg-farm-500 hover:bg-farm-400 text-white font-bold px-6 py-3 rounded-full transition-all cursor-pointer">
+          Lihat Menu
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </a>
+        <a href="#reservation" class="inline-flex items-center gap-2 border-2 border-white/80 text-white hover:bg-white hover:text-farm-700 font-bold px-6 py-3 rounded-full transition-all cursor-pointer">Reservasi Meja</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-none pointer-events-none">
+    <svg viewBox="0 0 1440 40" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" class="w-full block">
+      <path d="M0 40L0 20Q360 0 720 20Q1080 40 1440 20L1440 40Z" fill="#F9F6EF"/>
+    </svg>
+  </div>
+</section>
+
+
+<!-- ══════════════════ MENU MAIN ══════════════════ -->
+<div x-data="{
+  tab: 'food',
+  active: 'appetizers',
+  scrollTo(id) {
+    this.active = id;
+    const el = document.getElementById(id);
+    if (el) { const y = el.getBoundingClientRect().top + window.scrollY - 130; window.scrollTo({ top: y, behavior: 'smooth' }); }
+  }
+}" id="menu" class="bg-earth-200">
+
+  <!-- Food / Drink toggle -->
+  <div class="max-w-6xl mx-auto px-6 lg:px-12 pt-10 pb-3 flex items-center gap-3 flex-wrap">
+    <span class="font-body text-earth-600 text-sm font-bold uppercase tracking-wide">Tampilkan:</span>
+    <button @click="tab='food';  active='appetizers'"
+            :class="tab==='food' ?'bg-farm-500 text-white border-farm-500':'bg-white text-earth-700 border-earth-300 hover:border-farm-400'"
+            class="px-5 py-2 rounded-full text-sm font-bold border transition-all cursor-pointer">🍽️ Makanan</button>
+    <button @click="tab='drink'; active='drinks'"
+            :class="tab==='drink'?'bg-farm-500 text-white border-farm-500':'bg-white text-earth-700 border-earth-300 hover:border-farm-400'"
+            class="px-5 py-2 rounded-full text-sm font-bold border transition-all cursor-pointer">🥛 Minuman</button>
+  </div>
+
+  <!-- ── Sticky category pills ── -->
+  <div class="sticky top-[58px] z-40 bg-earth-200/95 backdrop-blur-sm border-b border-earth-300 shadow-sm">
+    <div class="max-w-6xl mx-auto px-6 lg:px-12">
+      <div class="cat-nav flex gap-2 overflow-x-auto py-3">
+
+        <!-- Food categories -->
+        <template x-if="tab==='food'">
+          <div class="flex gap-2 min-w-max">
+            <button @click="scrollTo('appetizers')" :class="active==='appetizers'?'active':''" class="cat-btn px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap cursor-pointer border border-earth-300 bg-white text-earth-700 hover:bg-farm-50 transition-all">Appetizers &amp; Snacks</button>
+            <button @click="scrollTo('karo')"        :class="active==='karo'?'active':''"        class="cat-btn px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap cursor-pointer border border-earth-300 bg-white text-earth-700 hover:bg-farm-50 transition-all">Taste of Karo</button>
+            <button @click="scrollTo('western')"     :class="active==='western'?'active':''"     class="cat-btn px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap cursor-pointer border border-earth-300 bg-white text-earth-700 hover:bg-farm-50 transition-all">Western &amp; Grill</button>
+            <button @click="scrollTo('pizza')"       :class="active==='pizza'?'active':''"       class="cat-btn px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap cursor-pointer border border-earth-300 bg-white text-earth-700 hover:bg-farm-50 transition-all">Wood-Fire Pizza</button>
+            <button @click="scrollTo('pasta')"       :class="active==='pasta'?'active':''"       class="cat-btn px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap cursor-pointer border border-earth-300 bg-white text-earth-700 hover:bg-farm-50 transition-all">Pasta</button>
+            <button @click="scrollTo('desserts')"    :class="active==='desserts'?'active':''"    class="cat-btn px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap cursor-pointer border border-earth-300 bg-white text-earth-700 hover:bg-farm-50 transition-all">Desserts</button>
+            <button @click="scrollTo('gelato')"      :class="active==='gelato'?'active':''"      class="cat-btn px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap cursor-pointer border border-earth-300 bg-white text-earth-700 hover:bg-farm-50 transition-all">Gelato</button>
+            <button @click="scrollTo('cheese-vault')" :class="active==='cheese-vault'?'active':''" class="cat-btn px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap cursor-pointer border border-earth-300 bg-white text-earth-700 hover:bg-farm-50 transition-all">Cheese Vault</button>
+          </div>
+        </template>
+        <!-- Drink categories -->
+        <template x-if="tab==='drink'">
+          <div class="flex gap-2 min-w-max">
+            <button @click="scrollTo('drinks-dairy')"  :class="active==='drinks-dairy'?'active':''"  class="cat-btn px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap cursor-pointer border border-earth-300 bg-white text-earth-700 hover:bg-farm-50 transition-all">Susu &amp; Dairy</button>
+            <button @click="scrollTo('drinks-coffee')" :class="active==='drinks-coffee'?'active':''" class="cat-btn px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap cursor-pointer border border-earth-300 bg-white text-earth-700 hover:bg-farm-50 transition-all">Kopi &amp; Teh</button>
+            <button @click="scrollTo('drinks-fresh')"  :class="active==='drinks-fresh'?'active':''"  class="cat-btn px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap cursor-pointer border border-earth-300 bg-white text-earth-700 hover:bg-farm-50 transition-all">Jus &amp; Segar</button>
+          </div>
+        </template>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ═══════ FOOD SECTIONS ═══════ -->
+  <div x-show="tab==='food'" class="max-w-6xl mx-auto px-6 lg:px-12 pb-16 space-y-20 pt-10">
+
+    <!-- ── Appetizers & Snacks ── -->
+    <section id="appetizers" class="scroll-mt-36">
+      <div class="rv flex items-center gap-4 mb-8">
+        <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold border cat-pill-appetizers">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+          Appetizers &amp; Snacks
+        </span>
+        <p class="font-body text-earth-500 text-sm hidden sm:block">Pembuka selera dari kebun kami</p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+
+        <!-- Card template: copy this block for each new menu item -->
+        <div class="rv rv-d1 menu-card bg-white rounded-2xl overflow-hidden shadow-sm cursor-default">
+          <div class="cat-bar-appetizers h-1"></div>
+          <div class="img-slot" data-label="Cheese Board Photo">
+            <img src="images/menu/appetizers/cheese-board.jpg" alt="Gundaling Cheese Board" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('img-error')">
+          </div>
+          <div class="p-4">
+            <div class="flex items-start justify-between gap-2 mb-1">
+              <h3 class="font-display font-bold text-earth-900 text-base leading-snug">Gundaling Cheese Board</h3>
+              <span class="font-body font-bold text-earth-600 text-sm whitespace-nowrap flex-shrink-0">Rp 125.000</span>
+            </div>
+            <div class="flex flex-wrap gap-1 mb-2">
+              <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-farm-100 text-farm-700">🌿 Farm made</span>
+            </div>
+            <p class="font-body text-earth-500 text-xs leading-relaxed line-clamp-2">3 keju artisan kami, crackers rye, madu kebun, selai buah.</p>
+          </div>
+        </div>
+
+        <div class="rv rv-d2 menu-card bg-white rounded-2xl overflow-hidden shadow-sm cursor-default">
+          <div class="cat-bar-appetizers h-1"></div>
+          <div class="img-slot" data-label="Bruschetta Photo">
+            <img src="images/menu/appetizers/bruschetta.jpg" alt="Farm Bruschetta" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('img-error')">
+          </div>
+          <div class="p-4">
+            <div class="flex items-start justify-between gap-2 mb-1">
+              <h3 class="font-display font-bold text-earth-900 text-base leading-snug">Farm Bruschetta</h3>
+              <span class="font-body font-bold text-earth-600 text-sm whitespace-nowrap flex-shrink-0">Rp 55.000</span>
+            </div>
+            <p class="font-body text-earth-500 text-xs leading-relaxed line-clamp-2">Roti sourdough buatan, tomat kebun, mozzarella segar, daun kemangi.</p>
+          </div>
+        </div>
+
+        <div class="rv rv-d3 menu-card bg-white rounded-2xl overflow-hidden shadow-sm cursor-default">
+          <div class="cat-bar-appetizers h-1"></div>
+          <div class="img-slot" data-label="Corn Fritters Photo">
+            <img src="images/menu/appetizers/corn-fritters.jpg" alt="Crispy Corn Fritters" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('img-error')">
+          </div>
+          <div class="p-4">
+            <div class="flex items-start justify-between gap-2 mb-1">
+              <h3 class="font-display font-bold text-earth-900 text-base leading-snug">Crispy Corn Fritters</h3>
+              <span class="font-body font-bold text-earth-600 text-sm whitespace-nowrap flex-shrink-0">Rp 45.000</span>
+            </div>
+            <p class="font-body text-earth-500 text-xs leading-relaxed line-clamp-2">Jagung manis segar dari kebun, sambal hijau Karo, krim asam.</p>
+          </div>
+        </div>
+
+        <div class="rv rv-d1 menu-card bg-white rounded-2xl overflow-hidden shadow-sm cursor-default">
+          <div class="cat-bar-appetizers h-1"></div>
+          <div class="img-slot" data-label="Garlic Herb Bread Photo">
+            <img src="images/menu/appetizers/garlic-herb-bread.jpg" alt="Garlic Herb Bread" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('img-error')">
+          </div>
+          <div class="p-4">
+            <div class="flex items-start justify-between gap-2 mb-1">
+              <h3 class="font-display font-bold text-earth-900 text-base leading-snug">Garlic Herb Bread</h3>
+              <span class="font-body font-bold text-earth-600 text-sm whitespace-nowrap flex-shrink-0">Rp 35.000</span>
+            </div>
+            <p class="font-body text-earth-500 text-xs leading-relaxed line-clamp-2">Roti panggang dengan mentega herb homemade dan parmesan.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── Taste of Karo ── -->
+    <section id="karo" class="scroll-mt-36">
+      <div class="rv flex items-center gap-4 mb-8">
+        <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold border cat-pill-karo">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          Taste of Karo
+        </span>
+        <p class="font-body text-earth-500 text-sm hidden sm:block">Warisan kuliner dataran tinggi Karo</p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+
+        <div class="rv rv-d1 menu-card bg-white rounded-2xl overflow-hidden shadow-sm cursor-default">
+          <div class="cat-bar-karo h-1"></div>
+          <div class="img-slot" data-label="Gulai Susu Karo Photo">
+            <img src="images/menu/karo/gulai-susu-karo.jpg" alt="Gulai Susu Karo" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('img-error')">
+          </div>
+          <div class="p-4">
+            <div class="flex items-start justify-between gap-2 mb-1">
+              <h3 class="font-display font-bold text-earth-900 text-base leading-snug">Gulai Susu Karo</h3>
+              <span class="font-body font-bold text-earth-600 text-sm whitespace-nowrap flex-shrink-0">Rp 95.000</span>
+            </div>
+            <div class="flex flex-wrap gap-1 mb-2">
+              <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-yellow-100 text-yellow-700">🌟 Signature</span>
+            </div>
+            <p class="font-body text-earth-500 text-xs leading-relaxed line-clamp-2">Daging sapi muda dimasak lambat 4 jam dalam susu segar dan santan.</p>
+          </div>
+        </div>
+
+        <div class="rv rv-d2 menu-card bg-white rounded-2xl overflow-hidden shadow-sm cursor-default">
+          <div class="cat-bar-karo h-1"></div>
+          <div class="img-slot" data-label="Sapi Panggang Karo Photo">
+            <img src="images/menu/karo/sapi-panggang-karo.jpg" alt="Sapi Panggang Karo" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('img-error')">
+          </div>
+          <div class="p-4">
+            <div class="flex items-start justify-between gap-2 mb-1">
+              <h3 class="font-display font-bold text-earth-900 text-base leading-snug">Sapi Panggang Karo</h3>
+              <span class="font-body font-bold text-earth-600 text-sm whitespace-nowrap flex-shrink-0">Rp 115.000</span>
+            </div>
+            <p class="font-body text-earth-500 text-xs leading-relaxed line-clamp-2">Daging sapi panggang gaya Karo dengan bumbu andaliman.</p>
+          </div>
+        </div>
+
+        <div class="rv rv-d3 menu-card bg-white rounded-2xl overflow-hidden shadow-sm cursor-default">
+          <div class="cat-bar-karo h-1"></div>
+          <div class="img-slot" data-label="Arsik Ikan Mas Photo">
+            <img src="images/menu/karo/arsik-ikan-mas.jpg" alt="Arsik Ikan Mas" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('img-error')">
+          </div>
+          <div class="p-4">
+            <div class="flex items-start justify-between gap-2 mb-1">
+              <h3 class="font-display font-bold text-earth-900 text-base leading-snug">Arsik Ikan Mas</h3>
+              <span class="font-body font-bold text-earth-600 text-sm whitespace-nowrap flex-shrink-0">Rp 95.000</span>
+            </div>
+            <p class="font-body text-earth-500 text-xs leading-relaxed line-clamp-2">Ikan mas dengan rempah Karo — andaliman, bawang, serai, jahe.</p>
+          </div>
+        </div>
+
+        <div class="rv rv-d1 menu-card bg-white rounded-2xl overflow-hidden shadow-sm cursor-default">
+          <div class="cat-bar-karo h-1"></div>
+          <div class="img-slot" data-label="Naniura Photo">
+            <img src="images/menu/karo/naniura.jpg" alt="Naniura" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('img-error')">
+          </div>
+          <div class="p-4">
+            <div class="flex items-start justify-between gap-2 mb-1">
+              <h3 class="font-display font-bold text-earth-900 text-base leading-snug">Naniura</h3>
+              <span class="font-body font-bold text-earth-600 text-sm whitespace-nowrap flex-shrink-0">Rp 85.000</span>
+            </div>
+            <p class="font-body text-earth-500 text-xs leading-relaxed line-clamp-2">Ikan mas mentah marinasi asam jungga &amp; andaliman. "Sashimi" Karo.</p>
+          </div>
+        </div>
+
+        <div class="rv rv-d2 menu-card bg-white rounded-2xl overflow-hidden shadow-sm cursor-default">
+          <div class="cat-bar-karo h-1"></div>
+          <div class="img-slot" data-label="Eintopf Karo Photo">
+            <img src="images/menu/karo/eintopf-karo.jpg" alt="Eintopf Karo" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('img-error')">
+          </div>
+          <div class="p-4">
+            <div class="flex items-start justify-between gap-2 mb-1">
+              <h3 class="font-display font-bold text-earth-900 text-base leading-snug">Eintopf Karo</h3>
+              <span class="font-body font-bold text-earth-600 text-sm whitespace-nowrap flex-shrink-0">Rp 85.000</span>
+            </div>
+            <p class="font-body text-earth-500 text-xs leading-relaxed line-clamp-2">Sup sayur lengkap gaya Karo dengan labu, jagung, dan kaldu sapi.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── Western & Grill ── -->
+    <section id="western" class="scroll-mt-36">
+      <div class="rv flex items-center gap-4 mb-8">
+        <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold border cat-pill-western">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 14v6m-3-3h6M6 10h2a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2zm10 0h2a2 2 0 002-2V6a2 2 0 00-2-2h-2a2 2 0 00-2 2v2a2 2 0 002 2zM6 20h2a2 2 0 002-2v-2a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2z"/></svg>
+          Western &amp; Grill
+        </span>
+        <p class="font-body text-earth-500 text-sm hidden sm:block">Steak &amp; sajian panggang dari sapi Holstein kami</p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+
+        <!-- Signature steak — wide card (col-span-2) -->
+        <div class="rv rv-d1 menu-card bg-white rounded-2xl overflow-hidden shadow-sm cursor-default sm:col-span-2">
+          <div class="cat-bar-western h-1"></div>
+          <div class="sm:grid sm:grid-cols-2">
+            <div class="img-slot sm:h-full" data-label="Farmstead Steak Photo" style="aspect-ratio:unset;min-height:180px">
+              <img src="images/menu/western/farmstead-steak.jpg" alt="Gundaling Farmstead Steak" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('img-error')">
+            </div>
+            <div class="p-5 flex flex-col justify-center">
+              <span class="font-body text-earth-500 text-xs font-bold uppercase tracking-widest mb-1">Signature Dish</span>
+              <h3 class="font-display font-bold text-earth-900 text-xl leading-snug mb-2">Gundaling Farmstead Steak</h3>
+              <p class="font-body text-earth-500 text-xs leading-relaxed mb-3">250g daging sapi Holstein kami, panggang sesuai pilihan. Truffle butter, kentang goreng farm, salad kebun.</p>
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-farm-100 text-farm-700">🥩 Farm-raised</span>
+                <span class="font-body font-bold text-earth-600 text-lg">Rp 185.000</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="rv rv-d2 menu-card bg-white rounded-2xl overflow-hidden shadow-sm cursor-default">
+          <div class="cat-bar-western h-1"></div>
+          <div class="img-slot" data-label="Farm Burger Photo">
+            <img src="images/menu/western/farm-burger.jpg" alt="Farm Burger" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('img-error')">
+          </div>
+          <div class="p-4">
+            <div class="flex items-start justify-between gap-2 mb-1">
+              <h3 class="font-display font-bold text-earth-900 text-base leading-snug">Farm Burger</h3>
+              <span class="font-body font-bold text-earth-600 text-sm whitespace-nowrap flex-shrink-0">Rp 85.000</span>
+            </div>
+            <p class="font-body text-earth-500 text-xs leading-relaxed line-clamp-2">Beef patty sapi kami, keju cheddar farm, selada kebun, brioche bun.</p>
+          </div>
+        </div>
+
+        <div class="rv rv-d3 menu-card bg-white rounded-2xl overflow-hidden shadow-sm cursor-default">
+          <div class="cat-bar-western h-1"></div>
+          <div class="img-slot" data-label="Grilled Chicken Photo">
+            <img src="images/menu/western/grilled-chicken.jpg" alt="Grilled Free-Range Chicken" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('img-error')">
+          </div>
+          <div class="p-4">
+            <div class="flex items-start justify-between gap-2 mb-1">
+              <h3 class="font-display font-bold text-earth-900 text-base leading-snug">Grilled Free-Range Chicken</h3>
+              <span class="font-body font-bold text-earth-600 text-sm whitespace-nowrap flex-shrink-0">Rp 95.000</span>
+            </div>
+            <div class="flex flex-wrap gap-1 mb-2">
+              <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-farm-100 text-farm-700">🌿 Farm-raised</span>
+            </div>
+            <p class="font-body text-earth-500 text-xs leading-relaxed line-clamp-2">Ayam kampung dengan herb segar, lemon, dan saus kebun.</p>
+          </div>
+        </div>
+
+        <div class="rv rv-d1 menu-card bg-white rounded-2xl overflow-hidden shadow-sm cursor-default">
+          <div class="cat-bar-western h-1"></div>
+          <div class="img-slot" data-label="BBQ Pork Ribs Photo">
+            <img src="images/menu/western/bbq-pork-ribs.jpg" alt="BBQ Pork Ribs" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('img-error')">
+          </div>
+          <div class="p-4">
+            <div class="flex items-start justify-between gap-2 mb-1">
+              <h3 class="font-display font-bold text-earth-900 text-base leading-snug">BBQ Pork Ribs</h3>
+              <span class="font-body font-bold text-earth-600 text-sm whitespace-nowrap flex-shrink-0">Rp 135.000</span>
+            </div>
+            <p class="font-body text-earth-500 text-xs leading-relaxed line-clamp-2">Iga babi slow-smoked 6 jam, saus BBQ house-made, coleslaw.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── Wood-Fire Pizza ── -->
+    <section id="pizza" class="scroll-mt-36">
+      <div class="rv flex items-center gap-4 mb-8">
+        <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold border cat-pill-pizza">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"/></svg>
+          Wood-Fire Pizza
+        </span>
+        <p class="font-body text-earth-500 text-sm hidden sm:block">Dipanggang di oven kayu, mozzarella dari dairy kami</p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+
+        <div class="rv rv-d1 menu-card bg-white rounded-2xl overflow-hidden shadow-sm cursor-default">
+          <div class="cat-bar-pizza h-1"></div>
+          <div class="img-slot" data-label="Carnivore Pizza Photo">
+            <img src="images/menu/pizza/carnivore-pizza.jpg" alt="Carnivore Pizza" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('img-error')">
+          </div>
+          <div class="p-4">
+            <div class="flex items-start justify-between gap-2 mb-1">
+              <h3 class="font-display font-bold text-earth-900 text-base leading-snug">Carnivore Pizza</h3>
+              <span class="font-body font-bold text-earth-600 text-sm whitespace-nowrap flex-shrink-0">Rp 115.000</span>
+            </div>
+            <div class="flex flex-wrap gap-1 mb-2">
+              <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-red-100 text-red-700">🏆 Best Seller</span>
+            </div>
+            <p class="font-body text-earth-500 text-xs leading-relaxed line-clamp-2">Beef sausage farm, prosciutto, bacon, mozzarella segar, saus tomat kebun.</p>
+          </div>
+        </div>
+
+        <div class="rv rv-d2 menu-card bg-white rounded-2xl overflow-hidden shadow-sm cursor-default">
+          <div class="cat-bar-pizza h-1"></div>
+          <div class="img-slot" data-label="Margherita Farm Photo">
+            <img src="images/menu/pizza/margherita-farm.jpg" alt="Margherita Farm" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('img-error')">
+          </div>
+          <div class="p-4">
+            <div class="flex items-start justify-between gap-2 mb-1">
+              <h3 class="font-display font-bold text-earth-900 text-base leading-snug">Margherita Farm</h3>
+              <span class="font-body font-bold text-earth-600 text-sm whitespace-nowrap flex-shrink-0">Rp 85.000</span>
+            </div>
+            <div class="flex flex-wrap gap-1 mb-2">
+              <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-farm-100 text-farm-700">🌿 Farm fresh</span>
+            </div>
+            <p class="font-body text-earth-500 text-xs leading-relaxed line-clamp-2">Mozzarella segar dairy kami, tomat kebun, basil segar, extra virgin olive oil.</p>
+          </div>
+        </div>
+
+        <div class="rv rv-d3 menu-card bg-white rounded-2xl overflow-hidden shadow-sm cursor-default">
+          <div class="cat-bar-pizza h-1"></div>
+          <div class="img-slot" data-label="Andaliman Chicken Pizza Photo">
+            <img src="images/menu/pizza/andaliman-chicken-pizza.jpg" alt="Andaliman Chicken Pizza" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('img-error')">
+          </div>
+          <div class="p-4">
+            <div class="flex items-start justify-between gap-2 mb-1">
+              <h3 class="font-display font-bold text-earth-900 text-base leading-snug">Andaliman Chicken</h3>
+              <span class="font-body font-bold text-earth-600 text-sm whitespace-nowrap flex-shrink-0">Rp 95.000</span>
+            </div>
+            <p class="font-body text-earth-500 text-xs leading-relaxed line-clamp-2">Ayam kampung, bumbu andaliman Karo, keju Gundaling, paprika.</p>
+          </div>
+        </div>
+
+        <div class="rv rv-d1 menu-card bg-white rounded-2xl overflow-hidden shadow-sm cursor-default">
+          <div class="cat-bar-pizza h-1"></div>
+          <div class="img-slot" data-label="Sinabung Volcano Pizza Photo">
+            <img src="images/menu/pizza/sinabung-volcano-pizza.jpg" alt="Sinabung Volcano Pizza" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('img-error')">
+          </div>
+          <div class="p-4">
+            <div class="flex items-start justify-between gap-2 mb-1">
+              <h3 class="font-display font-bold text-earth-900 text-base leading-snug">Sinabung Volcano</h3>
+              <span class="font-body font-bold text-earth-600 text-sm whitespace-nowrap flex-shrink-0">Rp 95.000</span>
+            </div>
+            <p class="font-body text-earth-500 text-xs leading-relaxed line-clamp-2">Pepperoni, jalapeño farm, cabe merah, chili oil farm. 🔥 Sangat pedas!</p>
+          </div>
+        </div>
+
+        <div class="rv rv-d2 menu-card bg-white rounded-2xl overflow-hidden shadow-sm cursor-default">
+          <div class="cat-bar-pizza h-1"></div>
+          <div class="img-slot" data-label="Cheese Lovers Pizza Photo">
+            <img src="images/menu/pizza/cheese-lovers-pizza.jpg" alt="Cheese Lovers Pizza" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('img-error')">
+          </div>
+          <div class="p-4">
+            <div class="flex items-start justify-between gap-2 mb-1">
+              <h3 class="font-display font-bold text-earth-900 text-base leading-snug">Cheese Lovers</h3>
+              <span class="font-body font-bold text-earth-600 text-sm whitespace-nowrap flex-shrink-0">Rp 105.000</span>
+            </div>
+            <div class="flex flex-wrap gap-1 mb-2">
+              <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-earth-100 text-earth-700">🧀 5 cheeses</span>
+            </div>
+            <p class="font-body text-earth-500 text-xs leading-relaxed line-clamp-2">5 keju dari dairy kami: mozzarella, gundaling, cheddar, parmesan, gorgonzola.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── Pasta ── -->
+    <section id="pasta" class="scroll-mt-36">
+      <div class="rv flex items-center gap-4 mb-8">
+        <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold border cat-pill-pasta">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+          Pasta
+        </span>
+        <p class="font-body text-earth-500 text-sm hidden sm:block">Fresh pasta dari telur ayam kampung kami</p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+
+        <div class="rv rv-d1 menu-card bg-white rounded-2xl overflow-hidden shadow-sm cursor-default">
+          <div class="cat-bar-pasta h-1"></div>
+          <div class="img-slot" data-label="Carbonara Photo">
+            <img src="images/menu/pasta/carbonara-holstein.jpg" alt="Carbonara Holstein" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('img-error')">
+          </div>
+          <div class="p-4">
+            <div class="flex items-start justify-between gap-2 mb-1">
+              <h3 class="font-display font-bold text-earth-900 text-base leading-snug">Carbonara Holstein</h3>
+              <span class="font-body font-bold text-earth-600 text-sm whitespace-nowrap flex-shrink-0">Rp 95.000</span>
+            </div>
+            <div class="flex flex-wrap gap-1 mb-2">
+              <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-farm-100 text-farm-700">🌿 Farm eggs</span>
+            </div>
+            <p class="font-body text-earth-500 text-xs leading-relaxed line-clamp-2">Guanciale, telur ayam kampung kami, parmesan, lada hitam segar. Tanpa krim.</p>
+          </div>
+        </div>
+
+        <div class="rv rv-d2 menu-card bg-white rounded-2xl overflow-hidden shadow-sm cursor-default">
+          <div class="cat-bar-pasta h-1"></div>
+          <div class="img-slot" data-label="Cacio e Pepe Photo">
+            <img src="images/menu/pasta/cacio-e-pepe.jpg" alt="Cacio e Pepe Farm" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('img-error')">
+          </div>
+          <div class="p-4">
+            <div class="flex items-start justify-between gap-2 mb-1">
+              <h3 class="font-display font-bold text-earth-900 text-base leading-snug">Cacio e Pepe Farm</h3>
+              <span class="font-body font-bold text-earth-600 text-sm whitespace-nowrap flex-shrink-0">Rp 85.000</span>
+            </div>
+            <p class="font-body text-earth-500 text-xs leading-relaxed line-clamp-2">Tonnarelli dengan keju Gundaling dan lada hitam. Simpel, jujur, luar biasa.</p>
+          </div>
+        </div>
+
+        <div class="rv rv-d3 menu-card bg-white rounded-2xl overflow-hidden shadow-sm cursor-default">
+          <div class="cat-bar-pasta h-1"></div>
+          <div class="img-slot" data-label="Aglio Olio Photo">
+            <img src="images/menu/pasta/aglio-olio-berastagi.jpg" alt="Aglio Olio Berastagi" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('img-error')">
+          </div>
+          <div class="p-4">
+            <div class="flex items-start justify-between gap-2 mb-1">
+              <h3 class="font-display font-bold text-earth-900 text-base leading-snug">Aglio Olio Berastagi</h3>
+              <span class="font-body font-bold text-earth-600 text-sm whitespace-nowrap flex-shrink-0">Rp 75.000</span>
+            </div>
+            <p class="font-body text-earth-500 text-xs leading-relaxed line-clamp-2">Bawang putih gunung, olive oil, cabe kering, jamur shiitake kebun.</p>
+          </div>
+        </div>
+
+        <div class="rv rv-d1 menu-card bg-white rounded-2xl overflow-hidden shadow-sm cursor-default">
+          <div class="cat-bar-pasta h-1"></div>
+          <div class="img-slot" data-label="Bolognese Karo Photo">
+            <img src="images/menu/pasta/bolognese-karo.jpg" alt="Bolognese Karo" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('img-error')">
+          </div>
+          <div class="p-4">
+            <div class="flex items-start justify-between gap-2 mb-1">
+              <h3 class="font-display font-bold text-earth-900 text-base leading-snug">Bolognese Karo</h3>
+              <span class="font-body font-bold text-earth-600 text-sm whitespace-nowrap flex-shrink-0">Rp 95.000</span>
+            </div>
+            <div class="flex flex-wrap gap-1 mb-2">
+              <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-farm-100 text-farm-700">🥩 Farm beef</span>
+            </div>
+            <p class="font-body text-earth-500 text-xs leading-relaxed line-clamp-2">Ragù sapi Holstein dengan anggur merah, tomat kebun, rempah Karo. Dimasak 3 jam.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── Desserts ── -->
+    <section id="desserts" class="scroll-mt-36">
+      <div class="rv flex items-center gap-4 mb-8">
+        <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold border cat-pill-desserts">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.704 2.704 0 00-3 0 2.704 2.704 0 01-3 0 2.701 2.701 0 00-1.5-.454M9 6v2m3-2v2m3-2v2M9 3h.01M12 3h.01M15 3h.01M21 21v-7a2 2 0 00-2-2H5a2 2 0 00-2 2v7h18zm-3-9v-2a2 2 0 00-2-2H8a2 2 0 00-2 2v2h12z"/></svg>
+          Desserts
+        </span>
+        <p class="font-body text-earth-500 text-sm hidden sm:block">Penutup manis dari susu Holstein kami</p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+
+        <!-- Signature dessert — wide -->
+        <div class="rv rv-d1 menu-card bg-white rounded-2xl overflow-hidden shadow-sm cursor-default sm:col-span-2">
+          <div class="cat-bar-desserts h-1"></div>
+          <div class="sm:grid sm:grid-cols-2">
+            <div class="img-slot sm:h-full" data-label="Tanah Berastagi Photo" style="aspect-ratio:unset;min-height:180px">
+              <img src="images/menu/desserts/tanah-berastagi.jpg" alt="Tanah Berastagi Dessert" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('img-error')">
+            </div>
+            <div class="p-5 flex flex-col justify-center">
+              <span class="font-body text-earth-500 text-xs font-bold uppercase tracking-widest mb-1">Signature Dessert</span>
+              <h3 class="font-display font-bold text-earth-900 text-xl mb-2">Tanah Berastagi</h3>
+              <p class="font-body text-earth-500 text-xs leading-relaxed mb-3">Dessert berlapis — soil dari crumble coklat, mousse susu segar, jelly teh berastagi, dan bunga edible dari kebun kami.</p>
+              <p class="font-body font-bold text-earth-600 text-lg">Rp 65.000</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="rv rv-d2 menu-card bg-white rounded-2xl overflow-hidden shadow-sm cursor-default">
+          <div class="cat-bar-desserts h-1"></div>
+          <div class="img-slot" data-label="Cheese Fondue Photo">
+            <img src="images/menu/desserts/cheese-fondue.jpg" alt="Cheese Fondue" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('img-error')">
+          </div>
+          <div class="p-4">
+            <div class="flex items-start justify-between gap-2 mb-1">
+              <h3 class="font-display font-bold text-earth-900 text-base leading-snug">Cheese Fondue</h3>
+              <span class="font-body font-bold text-earth-600 text-sm whitespace-nowrap flex-shrink-0">Rp 115.000</span>
+            </div>
+            <div class="flex flex-wrap gap-1 mb-2">
+              <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-earth-100 text-earth-700">🧀 For 2</span>
+            </div>
+            <p class="font-body text-earth-500 text-xs leading-relaxed line-clamp-2">3 keju artisan kami dilelehkan dengan anggur putih. Roti sourdough &amp; sayuran segar.</p>
+          </div>
+        </div>
+
+        <div class="rv rv-d3 menu-card bg-white rounded-2xl overflow-hidden shadow-sm cursor-default">
+          <div class="cat-bar-desserts h-1"></div>
+          <div class="img-slot" data-label="Farm Cheesecake Photo">
+            <img src="images/menu/desserts/farm-cheesecake.jpg" alt="Farm Cheese Cake" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('img-error')">
+          </div>
+          <div class="p-4">
+            <div class="flex items-start justify-between gap-2 mb-1">
+              <h3 class="font-display font-bold text-earth-900 text-base leading-snug">Farm Cheese Cake</h3>
+              <span class="font-body font-bold text-earth-600 text-sm whitespace-nowrap flex-shrink-0">Rp 55.000</span>
+            </div>
+            <p class="font-body text-earth-500 text-xs leading-relaxed line-clamp-2">New York style, keju cream farm, dasar biskuit, topping strawberry kebun segar.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── Gelato ── -->
+    <section id="gelato" class="scroll-mt-36">
+      <div class="rv flex items-center gap-4 mb-6">
+        <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold border cat-pill-gelato">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3c-1.933 0-3.5 1.343-3.5 3s1.567 3 3.5 3 3.5-1.343 3.5-3-1.567-3-3.5-3zm0 6v12"/></svg>
+          Gelato Artisan
+        </span>
+        <div class="hidden sm:block">
+          <p class="font-body text-earth-600 text-sm font-bold">Dibuat segar setiap hari dari susu Holstein kami</p>
+          <p class="font-body text-earth-500 text-xs">Single Rp 25.000 · Double Rp 40.000 · Triple Rp 55.000</p>
+        </div>
+      </div>
+
+      <!-- Overview wide card -->
+      <div class="rv rv-d1 bg-white rounded-2xl overflow-hidden shadow-sm mb-5">
+        <div class="cat-bar-gelato h-1"></div>
+        <div class="grid grid-cols-1 lg:grid-cols-2">
+          <div class="img-slot" data-label="Gelato Overview Photo" style="min-height:200px;aspect-ratio:unset">
+            <img src="images/menu/gelato/gelato-overview.jpg" alt="Gelato artisan Gundaling Farmstead — semua rasa" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('img-error')">
+          </div>
+          <div class="p-5 flex flex-col justify-center">
+            <h3 class="font-display font-bold text-earth-900 text-xl mb-2">11 Rasa Pilihan</h3>
+            <p class="font-body text-earth-500 text-sm leading-relaxed mb-4">Setiap scoop gelato dibuat dari susu segar Holstein kami yang diperah hari ini. Tanpa bahan pengawet, tanpa perisa buatan.</p>
+            <p class="font-body text-earth-600 text-sm font-bold">Single Rp 25.000 · Double Rp 40.000 · Triple Rp 55.000</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gelato flavor grid -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
+        <div class="rv rv-d1 menu-card bg-white rounded-2xl overflow-hidden shadow-sm cursor-default">
+          <div class="cat-bar-gelato h-1"></div>
+          <div class="img-slot" data-label="Chocolate Gelato" style="aspect-ratio:1/1">
+            <img src="images/menu/gelato/chocolate.jpg" alt="Gelato Chocolate" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('img-error')">
+          </div>
+          <div class="p-3 text-center"><p class="font-display font-bold text-earth-900 text-sm">Chocolate</p></div>
+        </div>
+        <div class="rv rv-d2 menu-card bg-white rounded-2xl overflow-hidden shadow-sm cursor-default">
+          <div class="cat-bar-gelato h-1"></div>
+          <div class="img-slot" data-label="Strawberry Gelato" style="aspect-ratio:1/1">
+            <img src="images/menu/gelato/strawberry.jpg" alt="Gelato Strawberry" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('img-error')">
+          </div>
+          <div class="p-3 text-center"><p class="font-display font-bold text-earth-900 text-sm">Strawberry</p></div>
+        </div>
+        <div class="rv rv-d3 menu-card bg-white rounded-2xl overflow-hidden shadow-sm cursor-default">
+          <div class="cat-bar-gelato h-1"></div>
+          <div class="img-slot" data-label="Milk Honey Gelato" style="aspect-ratio:1/1">
+            <img src="images/menu/gelato/milk-honey.jpg" alt="Gelato Milk Honey" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('img-error')">
+          </div>
+          <div class="p-3 text-center"><p class="font-display font-bold text-earth-900 text-sm">Milk Honey</p></div>
+        </div>
+        <div class="rv rv-d1 menu-card bg-white rounded-2xl overflow-hidden shadow-sm cursor-default">
+          <div class="cat-bar-gelato h-1"></div>
+          <div class="img-slot" data-label="Matcha Gelato" style="aspect-ratio:1/1">
+            <img src="images/menu/gelato/matcha.jpg" alt="Gelato Matcha" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('img-error')">
+          </div>
+          <div class="p-3 text-center"><p class="font-display font-bold text-earth-900 text-sm">Matcha</p></div>
+        </div>
+        <div class="rv rv-d2 menu-card bg-white rounded-2xl overflow-hidden shadow-sm cursor-default">
+          <div class="cat-bar-gelato h-1"></div>
+          <div class="img-slot" data-label="Sweet Potato Gelato" style="aspect-ratio:1/1">
+            <img src="images/menu/gelato/sweet-potato.jpg" alt="Gelato Sweet Potato" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('img-error')">
+          </div>
+          <div class="p-3 text-center"><p class="font-display font-bold text-earth-900 text-sm">Sweet Potato</p></div>
+        </div>
+        <div class="rv rv-d3 menu-card bg-white rounded-2xl overflow-hidden shadow-sm cursor-default">
+          <div class="cat-bar-gelato h-1"></div>
+          <div class="img-slot" data-label="Corn Gelato" style="aspect-ratio:1/1">
+            <img src="images/menu/gelato/corn.jpg" alt="Gelato Corn" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('img-error')">
+          </div>
+          <div class="p-3 text-center"><p class="font-display font-bold text-earth-900 text-sm">Corn</p></div>
+        </div>
+        <div class="rv rv-d1 menu-card bg-white rounded-2xl overflow-hidden shadow-sm cursor-default">
+          <div class="cat-bar-gelato h-1"></div>
+          <div class="img-slot" data-label="Cheese Gelato" style="aspect-ratio:1/1">
+            <img src="images/menu/gelato/cheese.jpg" alt="Gelato Cheese" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('img-error')">
+          </div>
+          <div class="p-3 text-center"><p class="font-display font-bold text-earth-900 text-sm">Cheese</p></div>
+        </div>
+        <div class="rv rv-d2 menu-card bg-white rounded-2xl overflow-hidden shadow-sm cursor-default">
+          <div class="cat-bar-gelato h-1"></div>
+          <div class="img-slot" data-label="Peanut Butter Gelato" style="aspect-ratio:1/1">
+            <img src="images/menu/gelato/peanut-butter.jpg" alt="Gelato Peanut Butter" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('img-error')">
+          </div>
+          <div class="p-3 text-center"><p class="font-display font-bold text-earth-900 text-sm">Peanut Butter</p></div>
+        </div>
+        <div class="rv rv-d3 menu-card bg-white rounded-2xl overflow-hidden shadow-sm cursor-default">
+          <div class="cat-bar-gelato h-1"></div>
+          <div class="img-slot" data-label="Coffee Gelato" style="aspect-ratio:1/1">
+            <img src="images/menu/gelato/coffee.jpg" alt="Gelato Coffee" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('img-error')">
+          </div>
+          <div class="p-3 text-center"><p class="font-display font-bold text-earth-900 text-sm">Coffee</p></div>
+        </div>
+        <div class="rv rv-d1 menu-card bg-white rounded-2xl overflow-hidden shadow-sm cursor-default">
+          <div class="cat-bar-gelato h-1"></div>
+          <div class="img-slot" data-label="Passionfruit Sorbet" style="aspect-ratio:1/1">
+            <img src="images/menu/gelato/passionfruit-sorbet.jpg" alt="Sorbet Passionfruit" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('img-error')">
+          </div>
+          <div class="p-3 text-center"><p class="font-display font-bold text-earth-900 text-sm">Passionfruit</p></div>
+        </div>
+        <div class="rv rv-d2 menu-card bg-white rounded-2xl overflow-hidden shadow-sm cursor-default">
+          <div class="cat-bar-gelato h-1"></div>
+          <div class="img-slot" data-label="Tamarillo Sorbet" style="aspect-ratio:1/1">
+            <img src="images/menu/gelato/tamarillo-sorbet.jpg" alt="Sorbet Tamarillo" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('img-error')">
+          </div>
+          <div class="p-3 text-center"><p class="font-display font-bold text-earth-900 text-sm">Tamarillo</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Cheese Vault ── -->
+    <section id="cheese-vault" class="scroll-mt-36 pb-4">
+      <div class="rv flex items-center gap-4 mb-8">
+        <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold border cat-pill-cheese">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2v-4M9 21H5a2 2 0 01-2-2v-4m0 0h18"/></svg>
+          Cheese Vault
+        </span>
+        <p class="font-body text-earth-500 text-sm hidden sm:block">5 varietas keju artisan · per 250g</p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5">
+
+        <div class="rv rv-d1 menu-card bg-white rounded-2xl overflow-hidden shadow-sm cursor-default">
+          <div class="cat-bar-cheese h-1"></div>
+          <div class="img-slot" data-label="Mozzarella Photo">
+            <img src="images/menu/cheese/mozzarella.jpg" alt="Fresh Mozzarella" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('img-error')">
+          </div>
+          <div class="p-4">
+            <h3 class="font-display font-bold text-earth-900 text-base mb-1">Fresh Mozzarella</h3>
+            <p class="font-body text-earth-500 text-xs mb-2">Dibuat pagi ini · Fresh daily</p>
+            <p class="font-body font-bold text-earth-600 text-sm">Rp 65.000 / 250g</p>
+          </div>
+        </div>
+
+        <div class="rv rv-d2 menu-card bg-white rounded-2xl overflow-hidden shadow-sm cursor-default">
+          <div class="cat-bar-cheese h-1"></div>
+          <div class="img-slot" data-label="Gundaling Cheese Photo">
+            <img src="images/menu/cheese/gundaling-cheese.jpg" alt="Gundaling Cheese" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('img-error')">
+          </div>
+          <div class="p-4">
+            <h3 class="font-display font-bold text-earth-900 text-base mb-1">Gundaling Cheese</h3>
+            <p class="font-body text-earth-500 text-xs mb-2">Semi-hard · Aged 1 month</p>
+            <p class="font-body font-bold text-earth-600 text-sm">Rp 75.000 / 250g</p>
+          </div>
+        </div>
+
+        <div class="rv rv-d3 menu-card bg-white rounded-2xl overflow-hidden shadow-sm cursor-default">
+          <div class="cat-bar-cheese h-1"></div>
+          <div class="img-slot" data-label="Curd Ricotta Photo">
+            <img src="images/menu/cheese/curd-ricotta.jpg" alt="Curd Ricotta" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('img-error')">
+          </div>
+          <div class="p-4">
+            <h3 class="font-display font-bold text-earth-900 text-base mb-1">Curd / Ricotta</h3>
+            <p class="font-body text-earth-500 text-xs mb-2">Lembut segar · Fresh daily</p>
+            <p class="font-body font-bold text-earth-600 text-sm">Rp 60.000 / 250g</p>
+          </div>
+        </div>
+
+        <div class="rv rv-d1 menu-card bg-white rounded-2xl overflow-hidden shadow-sm cursor-default">
+          <div class="cat-bar-cheese h-1"></div>
+          <div class="img-slot" data-label="Sinabung Tomme Photo">
+            <img src="images/menu/cheese/sinabung-tomme.jpg" alt="Sinabung Tomme" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('img-error')">
+          </div>
+          <div class="p-4">
+            <h3 class="font-display font-bold text-earth-900 text-base mb-1">Sinabung Tomme</h3>
+            <p class="font-body text-earth-500 text-xs mb-2">Bold, earthy · Aged 3 months</p>
+            <p class="font-body font-bold text-earth-600 text-sm">Rp 95.000 / 250g</p>
+          </div>
+        </div>
+
+        <div class="rv rv-d2 menu-card bg-white rounded-2xl overflow-hidden shadow-sm cursor-default relative">
+          <div class="absolute top-3 right-3 z-10 bg-earth-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">Best Seller</div>
+          <div class="cat-bar-cheese h-1"></div>
+          <div class="img-slot" data-label="Andaliman Tomme Photo">
+            <img src="images/menu/cheese/andaliman-tomme.jpg" alt="Andaliman Tomme" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('img-error')">
+          </div>
+          <div class="p-4">
+            <h3 class="font-display font-bold text-earth-900 text-base mb-1">Andaliman Tomme</h3>
+            <p class="font-body text-earth-500 text-xs mb-2">Karo spice, citrusy · Aged 3 months</p>
+            <p class="font-body font-bold text-earth-600 text-sm">Rp 95.000 / 250g</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </div>
+
+
+  <!-- ═══════ DRINK SECTIONS ═══════ -->
+  <div x-show="tab==='drink'" class="max-w-6xl mx-auto px-6 lg:px-12 pb-16 pt-10 space-y-14">
+    <section id="drinks" class="scroll-mt-36">
+
+      <!-- Susu & Dairy -->
+      <div id="drinks-dairy" class="scroll-mt-36 mb-12">
+        <p class="drink-type rv">Susu &amp; Produk Dairy</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+
+          <div class="rv rv-d1 menu-card bg-white rounded-2xl overflow-hidden shadow-sm cursor-default">
+            <div class="cat-bar-drinks h-1"></div>
+            <div class="img-slot" data-label="Susu Segar Photo">
+              <img src="images/menu/drinks/susu-segar.jpg" alt="Susu Segar Holstein" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('img-error')">
+            </div>
+            <div class="p-4">
+              <div class="flex items-start justify-between gap-2 mb-1">
+                <h3 class="font-display font-bold text-earth-900 text-base">Susu Segar Holstein</h3>
+                <span class="font-body font-bold text-earth-600 text-sm whitespace-nowrap flex-shrink-0">Rp 20.000</span>
+              </div>
+              <div class="flex flex-wrap gap-1 mb-1"><span class="text-xs font-bold px-2 py-0.5 rounded-full bg-farm-100 text-farm-700">🌿 Farm fresh</span></div>
+              <p class="font-body text-earth-500 text-xs">Diperah pagi ini · Warm or cold</p>
+            </div>
+          </div>
+
+          <div class="rv rv-d2 menu-card bg-white rounded-2xl overflow-hidden shadow-sm cursor-default">
+            <div class="cat-bar-drinks h-1"></div>
+            <div class="img-slot" data-label="Susu Coklat Photo">
+              <img src="images/menu/drinks/susu-coklat.jpg" alt="Susu Coklat" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('img-error')">
+            </div>
+            <div class="p-4">
+              <div class="flex items-start justify-between gap-2 mb-1">
+                <h3 class="font-display font-bold text-earth-900 text-base">Susu Coklat</h3>
+                <span class="font-body font-bold text-earth-600 text-sm whitespace-nowrap flex-shrink-0">Rp 25.000</span>
+              </div>
+              <p class="font-body text-earth-500 text-xs">Farm fresh milk + dark cocoa</p>
+            </div>
+          </div>
+
+          <div class="rv rv-d3 menu-card bg-white rounded-2xl overflow-hidden shadow-sm cursor-default">
+            <div class="cat-bar-drinks h-1"></div>
+            <div class="img-slot" data-label="Yogurt Drink Photo">
+              <img src="images/menu/drinks/yogurt-drink.jpg" alt="Yogurt Drink" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('img-error')">
+            </div>
+            <div class="p-4">
+              <div class="flex items-start justify-between gap-2 mb-1">
+                <h3 class="font-display font-bold text-earth-900 text-base">Yogurt Drink</h3>
+                <span class="font-body font-bold text-earth-600 text-sm whitespace-nowrap flex-shrink-0">Rp 30.000</span>
+              </div>
+              <p class="font-body text-earth-500 text-xs">Vanilla · Strawberry · Mango · Blueberry</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Kopi & Teh -->
+      <div id="drinks-coffee" class="scroll-mt-36 mb-12">
+        <p class="drink-type rv">Kopi &amp; Teh</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+
+          <div class="rv rv-d1 menu-card bg-white rounded-2xl overflow-hidden shadow-sm cursor-default">
+            <div class="cat-bar-drinks h-1"></div>
+            <div class="img-slot" data-label="Kopi Arabika Karo Photo">
+              <img src="images/menu/drinks/kopi-arabika-karo.jpg" alt="Kopi Arabika Karo" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('img-error')">
+            </div>
+            <div class="p-4">
+              <div class="flex items-start justify-between gap-2 mb-1">
+                <h3 class="font-display font-bold text-earth-900 text-base">Kopi Arabika Karo</h3>
+                <span class="font-body font-bold text-earth-600 text-sm whitespace-nowrap flex-shrink-0">Rp 30.000</span>
+              </div>
+              <div class="flex flex-wrap gap-1 mb-1"><span class="text-xs font-bold px-2 py-0.5 rounded-full bg-farm-100 text-farm-700">🌿 Local origin</span></div>
+              <p class="font-body text-earth-500 text-xs">Single origin · Karo highlands</p>
+            </div>
+          </div>
+
+          <div class="rv rv-d2 menu-card bg-white rounded-2xl overflow-hidden shadow-sm cursor-default">
+            <div class="cat-bar-drinks h-1"></div>
+            <div class="img-slot" data-label="Flat White Photo">
+              <img src="images/menu/drinks/flat-white.jpg" alt="Flat White with Farm Milk" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('img-error')">
+            </div>
+            <div class="p-4">
+              <div class="flex items-start justify-between gap-2 mb-1">
+                <h3 class="font-display font-bold text-earth-900 text-base">Flat White</h3>
+                <span class="font-body font-bold text-earth-600 text-sm whitespace-nowrap flex-shrink-0">Rp 38.000</span>
+              </div>
+              <p class="font-body text-earth-500 text-xs">Arabika Karo + susu Holstein kami</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Jus & Segar -->
+      <div id="drinks-fresh" class="scroll-mt-36">
+        <p class="drink-type rv">Jus &amp; Minuman Segar</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+
+          <div class="rv rv-d1 menu-card bg-white rounded-2xl overflow-hidden shadow-sm cursor-default">
+            <div class="cat-bar-drinks h-1"></div>
+            <div class="img-slot" data-label="Jus Stroberi Photo">
+              <img src="images/menu/drinks/jus-stroberi.jpg" alt="Jus Stroberi Segar" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('img-error')">
+            </div>
+            <div class="p-4">
+              <div class="flex items-start justify-between gap-2 mb-1">
+                <h3 class="font-display font-bold text-earth-900 text-base">Jus Stroberi Segar</h3>
+                <span class="font-body font-bold text-earth-600 text-sm whitespace-nowrap flex-shrink-0">Rp 35.000</span>
+              </div>
+              <div class="flex flex-wrap gap-1 mb-1"><span class="text-xs font-bold px-2 py-0.5 rounded-full bg-farm-100 text-farm-700">🌿 Farm grown</span></div>
+              <p class="font-body text-earth-500 text-xs">Stroberi kebun, diperas segar</p>
+            </div>
+          </div>
+
+          <div class="rv rv-d2 menu-card bg-white rounded-2xl overflow-hidden shadow-sm cursor-default">
+            <div class="cat-bar-drinks h-1"></div>
+            <div class="img-slot" data-label="Passionfruit Lemonade Photo">
+              <img src="images/menu/drinks/passionfruit-lemonade.jpg" alt="Passionfruit Lemonade" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('img-error')">
+            </div>
+            <div class="p-4">
+              <div class="flex items-start justify-between gap-2 mb-1">
+                <h3 class="font-display font-bold text-earth-900 text-base">Passionfruit Lemonade</h3>
+                <span class="font-body font-bold text-earth-600 text-sm whitespace-nowrap flex-shrink-0">Rp 35.000</span>
+              </div>
+              <p class="font-body text-earth-500 text-xs">Markisa kebun + lemon segar</p>
+            </div>
+          </div>
+
+          <div class="rv rv-d3 menu-card bg-white rounded-2xl overflow-hidden shadow-sm cursor-default">
+            <div class="cat-bar-drinks h-1"></div>
+            <div class="img-slot" data-label="Tamarillo Smoothie Photo">
+              <img src="images/menu/drinks/tamarillo-smoothie.jpg" alt="Tamarillo Smoothie" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('img-error')">
+            </div>
+            <div class="p-4">
+              <div class="flex items-start justify-between gap-2 mb-1">
+                <h3 class="font-display font-bold text-earth-900 text-base">Tamarillo Smoothie</h3>
+                <span class="font-body font-bold text-earth-600 text-sm whitespace-nowrap flex-shrink-0">Rp 40.000</span>
+              </div>
+              <p class="font-body text-earth-500 text-xs">Terong belanda + susu + madu</p>
+            </div>
+          </div>
+
+          <div class="rv rv-d1 bg-white rounded-2xl overflow-hidden shadow-sm p-4 flex flex-col gap-3">
+            <div class="cat-bar-drinks h-1 -mt-4 -mx-4 mb-3 rounded-t-2xl"></div>
+            <div class="flex items-center justify-between"><span class="font-body font-bold text-earth-800 text-sm">Kelapa Muda</span><span class="font-body font-bold text-earth-600 text-sm">Rp 30.000</span></div>
+            <div class="flex items-center justify-between"><span class="font-body font-bold text-earth-800 text-sm">Air Mineral</span><span class="font-body font-bold text-earth-600 text-sm">Rp 15.000</span></div>
+            <div class="flex items-center justify-between"><span class="font-body font-bold text-earth-800 text-sm">Soft Drink</span><span class="font-body font-bold text-earth-600 text-sm">Rp 20.000</span></div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </div>
+
+</div><!-- end x-data menu -->
+
+
+<!-- ══════════════════ RESERVATION ══════════════════ -->
+<section id="reservation" class="bg-farm-700 py-20 lg:py-28 px-6 lg:px-12 relative overflow-hidden">
+  <div class="absolute inset-0 opacity-5 pointer-events-none select-none"><svg viewBox="0 0 800 600" fill="none" class="w-full h-full"><ellipse cx="400" cy="300" rx="480" ry="320" fill="#82be89"/></svg></div>
+  <div class="max-w-4xl mx-auto relative z-10">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <div class="rv">
+        <span class="font-body text-farm-300 text-xs uppercase tracking-widest font-bold">Book Your Table</span>
+        <h2 class="font-display text-3xl lg:text-4xl font-bold text-white mt-3 mb-4">Reservasi Meja</h2>
+        <p class="font-body text-farm-200 text-base leading-relaxed mb-6">Untuk grup lebih dari 8 orang, hubungi kami langsung via WhatsApp agar kami dapat menyiapkan pengalaman terbaik untuk Anda.</p>
+        <div class="space-y-3 text-farm-200 text-sm font-body">
+          <div class="flex items-center gap-3"><svg class="w-4 h-4 text-farm-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Senin–Minggu · 10.00–20.00 (last order 19.00)</div>
+          <div class="flex items-center gap-3"><svg class="w-4 h-4 text-farm-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>+62 821-6259-9980</div>
+        </div>
+        <img src="images/mascot/cow_mascot_apron.svg" alt="Maskot menyambut" class="mascot-float h-40 w-auto mt-8 select-none hidden lg:block" draggable="false" loading="lazy">
+      </div>
+      <div class="rv rv-d2 bg-white rounded-3xl p-6 lg:p-8 shadow-2xl">
+        <h3 class="font-display font-bold text-earth-900 text-xl mb-5">Kirim Pesan Reservasi</h3>
+        <form action="https://wa.me/6282162599980" method="get" target="_blank" class="space-y-4">
+          <div><label class="font-body text-earth-700 text-sm font-bold block mb-1.5" for="res-name">Nama</label>
+            <input id="res-name" type="text" name="contact" placeholder="Nama Anda" required class="w-full border border-earth-300 rounded-xl px-4 py-3 font-body text-sm focus:outline-none focus:ring-2 focus:ring-farm-400 transition"></div>
+          <div class="grid grid-cols-2 gap-3">
+            <div><label class="font-body text-earth-700 text-sm font-bold block mb-1.5">Tanggal</label>
+              <input type="date" class="w-full border border-earth-300 rounded-xl px-4 py-3 font-body text-sm focus:outline-none focus:ring-2 focus:ring-farm-400 transition"></div>
+            <div><label class="font-body text-earth-700 text-sm font-bold block mb-1.5">Pukul</label>
+              <select class="w-full border border-earth-300 rounded-xl px-4 py-3 font-body text-sm focus:outline-none focus:ring-2 focus:ring-farm-400 transition">
+                <option>10:00</option><option>11:00</option><option>12:00</option><option>13:00</option>
+                <option>14:00</option><option>15:00</option><option>16:00</option><option>17:00</option>
+                <option>18:00</option><option>19:00</option>
+              </select></div>
+          </div>
+          <div><label class="font-body text-earth-700 text-sm font-bold block mb-1.5">Jumlah Tamu</label>
+            <select class="w-full border border-earth-300 rounded-xl px-4 py-3 font-body text-sm focus:outline-none focus:ring-2 focus:ring-farm-400 transition">
+              <option>1–2 orang</option><option>3–4 orang</option><option>5–6 orang</option><option>7–8 orang</option><option>Lebih dari 8 (grup)</option>
+            </select></div>
+          <div><label class="font-body text-earth-700 text-sm font-bold block mb-1.5">Catatan</label>
+            <textarea rows="2" name="text" placeholder="Alergi, perayaan, preferensi meja..." class="w-full border border-earth-300 rounded-xl px-4 py-3 font-body text-sm focus:outline-none focus:ring-2 focus:ring-farm-400 transition resize-none"></textarea></div>
+          <button type="submit" class="w-full bg-farm-500 hover:bg-farm-400 text-white font-bold py-3.5 rounded-full transition-all cursor-pointer flex items-center justify-center gap-2">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Kirim via WhatsApp
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════ FOOTER ══════════════════ -->
+<footer class="bg-farm-700 text-white">
+  <div class="relative h-20 bg-farm-800 border-y border-white/10 overflow-hidden">
+    <div class="mascot-walk h-16 select-none"><img src="images/mascot/cow_mascot_vector.svg" alt="" class="h-16 w-auto" loading="lazy" draggable="false"></div>
+    <div class="absolute bottom-0 left-0 w-full h-1 bg-farm-500"></div>
+  </div>
+  <div class="max-w-7xl mx-auto px-6 lg:px-12 py-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+    <div><img src="images/logos/Logo_GUNDALING_2-color_tall_on-white.png" alt="Gundaling Farmstead" class="h-14 brightness-0 invert mb-5" loading="lazy"><p class="font-body text-farm-200 text-sm leading-relaxed mb-4">Farm to table di Dataran Tinggi Karo, Sumatera Utara sejak 2005.</p><div class="flex flex-wrap gap-2"><span class="bg-farm-600 text-farm-200 text-xs px-3 py-1 rounded-full font-semibold">🌿 Organic</span><span class="bg-farm-600 text-farm-200 text-xs px-3 py-1 rounded-full font-semibold">Est. 2005</span></div></div>
+    <div><h4 class="font-display font-bold text-white text-lg mb-4">Menu</h4><ul class="space-y-2">
+      <li><a href="#appetizers" class="font-body text-farm-300 hover:text-white text-sm cursor-pointer transition-colors">Appetizers</a></li>
+      <li><a href="#karo"       class="font-body text-farm-300 hover:text-white text-sm cursor-pointer transition-colors">Taste of Karo</a></li>
+      <li><a href="#pizza"      class="font-body text-farm-300 hover:text-white text-sm cursor-pointer transition-colors">Wood-Fire Pizza</a></li>
+      <li><a href="#cheese-vault" class="font-body text-farm-300 hover:text-white text-sm cursor-pointer transition-colors">Cheese Vault</a></li>
+    </ul></div>
+    <div><h4 class="font-display font-bold text-white text-lg mb-4">Gundaling</h4><ul class="space-y-2">
+      <li><a href="index.html"          class="font-body text-farm-300 hover:text-white text-sm cursor-pointer transition-colors">Home</a></li>
+      <li><a href="farm.html"           class="font-body text-farm-300 hover:text-white text-sm cursor-pointer transition-colors">Farm &amp; Field Trip</a></li>
+      <li><a href="promo.html"          class="font-body text-farm-300 hover:text-white text-sm cursor-pointer transition-colors">Promo &amp; Shop</a></li>
+      <li><a href="#reservation"        class="font-body text-farm-300 hover:text-white text-sm cursor-pointer transition-colors">Reservasi</a></li>
+    </ul></div>
+    <div><h4 class="font-display font-bold text-white text-lg mb-4">Find Us</h4><ul class="space-y-3">
+      <li class="flex items-start gap-2"><svg class="w-4 h-4 text-farm-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg><span class="font-body text-farm-300 text-sm">Jl. Jamin Ginting, Desa Jaranguda, Berastagi 22158</span></li>
+      <li class="flex items-center gap-2"><svg class="w-4 h-4 text-farm-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg><span class="font-body text-farm-300 text-sm">10.00–20.00 daily</span></li>
+      <li class="flex items-center gap-2"><svg class="w-4 h-4 text-farm-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg><a href="tel:+6282162599980" class="font-body text-farm-300 hover:text-white text-sm transition-colors">+62 821-6259-9980</a></li>
+    </ul></div>
+  </div>
+  <div class="border-t border-white/10 px-6 lg:px-12 py-5">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3">
+      <p class="font-body text-farm-400 text-xs">© 2025 Gundaling Farmstead — PT. Putra Indo Mandiri Sejahtera</p>
+      <div class="flex items-center gap-5">
+        <a href="https://www.instagram.com/gundaling_farmstead" target="_blank" rel="noopener" class="font-body text-farm-400 hover:text-white text-xs transition-colors cursor-pointer">Instagram</a>
+        <a href="https://www.facebook.com/GundalingFarmstead"   target="_blank" rel="noopener" class="font-body text-farm-400 hover:text-white text-xs transition-colors cursor-pointer">Facebook</a>
+        <a href="https://linktr.ee/gundaling_farmstead"         target="_blank" rel="noopener" class="font-body text-farm-400 hover:text-white text-xs transition-colors cursor-pointer">Linktree</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- WhatsApp float -->
+<div x-data="{show:false}" x-init="setTimeout(()=>show=true,3000)">
+  <a x-show="show" x-transition:enter="transition ease-out duration-500" x-transition:enter-start="opacity-0 scale-0" x-transition:enter-end="opacity-100 scale-100"
+     href="https://wa.me/6282162599980?text=Halo%20Gundaling%20Farmstead%2C%20saya%20ingin%20reservasi%20meja"
+     target="_blank" rel="noopener" aria-label="WhatsApp" class="fixed bottom-8 right-8 z-50 w-14 h-14 bg-[#25D366] rounded-full flex items-center justify-center shadow-xl hover:scale-110 transition-transform cursor-pointer">
+    <svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  </a>
+</div>
+
+<script>
+  // Scroll reveal
+  const rvObs = new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); }), { threshold: .1 });
+  document.querySelectorAll('.rv').forEach(el => rvObs.observe(el));
+
+  // Scroll spy — updates active category pill
+  const spyMap = {
+    'appetizers':'appetizers','karo':'karo','western':'western','pizza':'pizza',
+    'pasta':'pasta','desserts':'desserts','gelato':'gelato','cheese-vault':'cheese-vault',
+    'drinks':'drinks','drinks-dairy':'drinks-dairy','drinks-coffee':'drinks-coffee','drinks-fresh':'drinks-fresh'
+  };
+  const spyObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const comp = document.querySelector('[x-data]');
+      if (comp && comp._x_dataStack) {
+        const data = comp._x_dataStack[0];
+        if (data && spyMap[e.target.id]) data.active = spyMap[e.target.id];
+      }
+    });
+  }, { threshold: .35, rootMargin: '-120px 0px -50% 0px' });
+  Object.keys(spyMap).forEach(id => { const el = document.getElementById(id); if(el) spyObs.observe(el); });
+</script>
+
+</body>
+</html>
