@@ -1,0 +1,93 @@
+@import "tailwindcss";
+
+@theme {
+  /* ── Brand palette (from Gundaling Logo Guideline) ─────────────
+     Dark:   #3a2316  (R:59  G:35  B:20)
+     Cream:  #fffef3  (R:255 G:253 B:242)
+     Brown:  #765f52  (R:118 G:95  B:82)
+  ─────────────────────────────────────────────────────────────── */
+
+  /* farm-* — nature green (accents) fading into brand-dark at the deep end */
+  --color-farm-50:  #f2f7f0;
+  --color-farm-100: #dceadd;
+  --color-farm-200: #b4d4b8;
+  --color-farm-300: #82b888;
+  --color-farm-400: #4d8f54;
+  --color-farm-500: #2a5c2c;
+  --color-farm-600: #3d2a1c;   /* bridge: green → brand dark            */
+  --color-farm-700: #3a2316;   /* ★ BRAND DARK  — nav, hero, footer      */
+  --color-farm-800: #2d1b10;
+  --color-farm-900: #1f1009;   /* deepest rustic black-brown              */
+
+  /* earth-* — warm rustic tones / brand cream & brown */
+  --color-earth-50:  #fdfaf6;
+  --color-earth-100: #f8f3ea;
+  --color-earth-200: #fffef3;  /* ★ BRAND CREAM — page & card backgrounds */
+  --color-earth-300: #e5d0b5;
+  --color-earth-400: #c4a882;
+  --color-earth-500: #765f52;  /* ★ BRAND BROWN — labels, muted text      */
+  --color-earth-600: #5c4030;
+  --color-earth-700: #3a2316;  /* ★ BRAND DARK  — headings, body text     */
+  --color-earth-800: #2d1a0f;
+  --color-earth-900: #1f100a;
+
+  /* rustic-* — dark chalkboard / blackboard / dark wood */
+  --color-rustic-board:  #1c130c;   /* blackboard dark                    */
+  --color-rustic-wood:   #2e1f12;   /* dark wood plank                    */
+  --color-rustic-chalk:  #f5f0e8;   /* chalk-white text on board          */
+  --color-rustic-amber:  #c47d2b;   /* warm amber / candlelight           */
+  --color-rustic-rust:   #8b3a1e;   /* rust-red accent                    */
+
+  --font-display: "Playfair Display", Georgia, serif;
+  --font-body:    "Nunito", sans-serif;
+}
+
+/* ── Base ─────────────────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  color:        var(--color-earth-700);
+  background:   var(--color-earth-200);   /* brand cream */
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-farm-400);
+  outline-offset: 2px;
+}
+
+/* ── Scrollbar ────────────────────────────────────────────────── */
+::-webkit-scrollbar        { width: 5px; }
+::-webkit-scrollbar-track  { background: var(--color-earth-100); }
+::-webkit-scrollbar-thumb  { background: var(--color-earth-500); border-radius: 3px; }
+
+/* ── Font helpers ─────────────────────────────────────────────── */
+.font-display { font-family: var(--font-display); }
+.font-body    { font-family: var(--font-body); }
+
+/* ── Rustic board background ──────────────────────────────────── */
+.bg-board {
+  background-color: var(--color-rustic-board);
+}
+.bg-wood {
+  background-color: var(--color-rustic-wood);
+}
+
+/* ── Grain / paper texture overlay ───────────────────────────── */
+.texture-grain::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+}
+
+/* ── Rustic chalk divider ─────────────────────────────────────── */
+.chalk-line {
+  border-top: 1px dashed rgba(245,240,232,0.25);
+}
