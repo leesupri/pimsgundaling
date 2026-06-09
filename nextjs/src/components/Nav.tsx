@@ -5,20 +5,22 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-
-const links = [
-  { href: "/", label: "Home" },
-  { href: "/restaurant", label: "Restaurant" },
-  { href: "/farm", label: "Farm" },
-  { href: "/promo", label: "Promo & Shop" },
-  { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" },
-];
+import { useLanguage } from "@/lib/i18n";
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const { lang, setLang, t } = useLanguage();
+
+  const links = [
+    { href: "/", label: t.nav.home },
+    { href: "/restaurant", label: t.nav.restaurant },
+    { href: "/farm", label: t.nav.farm },
+    { href: "/promo", label: t.nav.promoShop },
+    { href: "/about", label: t.nav.about },
+    { href: "/contact", label: t.nav.contact },
+  ];
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 60);
@@ -42,7 +44,7 @@ export default function Nav() {
             : "py-5 bg-transparent"
         }`}
       >
-        <Link href="/" className="flex-shrink-0">
+        <Link href="/" className="shrink-0">
           <Image
             src="/images/logos/Logo_GUNDALING_2-color_tall_on-white.png"
             alt="Gundaling Farmstead"
@@ -75,11 +77,28 @@ export default function Nav() {
         </ul>
 
         <div className="flex items-center gap-3">
+          {/* Language toggle */}
+          <div className="hidden lg:flex items-center gap-1 bg-white/10 rounded-full p-1">
+            {(["id", "en"] as const).map((l) => (
+              <button
+                key={l}
+                onClick={() => setLang(l)}
+                className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide transition-all duration-200 ${
+                  lang === l
+                    ? "bg-farm-400 text-white shadow"
+                    : "text-white/70 hover:text-white"
+                }`}
+              >
+                {l}
+              </button>
+            ))}
+          </div>
+
           <Link
             href="/restaurant#reservation"
             className="hidden lg:inline-flex items-center gap-2 bg-farm-400 hover:bg-farm-300 text-white text-sm font-bold px-5 py-2.5 rounded-full transition-all duration-300 hover:shadow-lg hover:shadow-farm-400/30"
           >
-            Reservasi
+            {t.nav.reserve}
           </Link>
           <button
             onClick={() => setOpen(!open)}
@@ -136,17 +155,38 @@ export default function Nav() {
                   </Link>
                 </motion.li>
               ))}
+              {/* Mobile language toggle */}
               <motion.li
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: links.length * 0.06 }}
-                className="pt-4"
+                className="pt-3 flex gap-2"
+              >
+                {(["id", "en"] as const).map((l) => (
+                  <button
+                    key={l}
+                    onClick={() => setLang(l)}
+                    className={`flex-1 py-2 rounded-full text-sm font-bold uppercase tracking-wide transition-all ${
+                      lang === l
+                        ? "bg-farm-400 text-white"
+                        : "border border-white/30 text-white/70 hover:text-white"
+                    }`}
+                  >
+                    {l === "id" ? "🇮🇩 Indonesia" : "🇬🇧 English"}
+                  </button>
+                ))}
+              </motion.li>
+              <motion.li
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: (links.length + 1) * 0.06 }}
+                className="pt-2"
               >
                 <Link
                   href="/restaurant#reservation"
                   className="block text-center bg-farm-400 text-white font-bold py-3.5 rounded-full"
                 >
-                  Reservasi Meja
+                  {t.nav.reserveTable}
                 </Link>
               </motion.li>
             </ul>

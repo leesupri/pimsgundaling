@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Nunito } from "next/font/google";
 import "./globals.css";
+import { LanguageProvider } from "@/lib/i18n";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -43,7 +44,7 @@ export default function RootLayout({
         className="min-h-screen bg-earth-200 font-body text-earth-900 antialiased overflow-x-hidden"
         suppressHydrationWarning
       >
-        {children}
+        <LanguageProvider>{children}</LanguageProvider>
       </body>
     </html>
   );

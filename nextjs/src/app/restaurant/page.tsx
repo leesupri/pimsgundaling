@@ -6,6 +6,7 @@ import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion"
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { AnimatedSection, StaggerContainer, staggerItem } from "@/components/AnimatedSection";
+import { useLanguage } from "@/lib/i18n";
 
 // ── Types ──────────────────────────────────────────────────────────
 interface MenuItem {
@@ -34,25 +35,12 @@ function Card({ item, color }: Readonly<{ item: MenuItem; color: string }>) {
     >
       {item.img ? (
         <div className="relative aspect-[4/3] overflow-hidden bg-earth-200">
-          <motion.div
-            className="absolute inset-0"
-            whileHover={{ scale: 1.06 }}
-            transition={{ duration: 0.5 }}
-          >
-            <Image
-              src={item.img}
-              alt={item.name}
-              fill
-              className="object-cover"
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-              onError={() => {}}
-            />
+          <motion.div className="absolute inset-0" whileHover={{ scale: 1.06 }} transition={{ duration: 0.5 }}>
+            <Image src={item.img} alt={item.name} fill className="object-cover" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw" onError={() => {}} />
           </motion.div>
           <div className={`absolute top-0 left-0 w-full h-1 ${color}`} />
           {item.badge && (
-            <span className="absolute top-3 right-3 bg-farm-400 text-white text-xs font-bold px-2 py-0.5 rounded-full">
-              {item.badge}
-            </span>
+            <span className="absolute top-3 right-3 bg-farm-400 text-white text-xs font-bold px-2 py-0.5 rounded-full">{item.badge}</span>
           )}
         </div>
       ) : (
@@ -61,7 +49,7 @@ function Card({ item, color }: Readonly<{ item: MenuItem; color: string }>) {
       <div className="p-4">
         <div className="flex items-start justify-between gap-2 mb-1">
           <h3 className="font-display font-bold text-earth-900 text-base leading-snug">{item.name}</h3>
-          <span className="text-earth-600 text-sm font-bold whitespace-nowrap flex-shrink-0">Rp {item.price}</span>
+          <span className="text-earth-600 text-sm font-bold whitespace-nowrap shrink-0">Rp {item.price}</span>
         </div>
         {item.desc && <p className="text-earth-500 text-xs leading-relaxed line-clamp-2">{item.desc}</p>}
       </div>
@@ -71,14 +59,9 @@ function Card({ item, color }: Readonly<{ item: MenuItem; color: string }>) {
 
 function PriceList({ rows, title }: Readonly<{ rows: PriceRow[]; title?: string }>) {
   return (
-    <motion.div
-      variants={staggerItem}
-      className="bg-white rounded-2xl shadow-sm overflow-hidden p-5"
-    >
-      <div className="cat-bar-drinks h-1 -mt-5 -mx-5 mb-4" style={{ background: "#0284c7" }} />
-      {title && (
-        <p className="font-display font-bold text-earth-800 text-base mb-3 pb-2 border-b border-earth-200">{title}</p>
-      )}
+    <motion.div variants={staggerItem} className="bg-white rounded-2xl shadow-sm overflow-hidden p-5">
+      <div className="h-1 -mt-5 -mx-5 mb-4" style={{ background: "#0284c7" }} />
+      {title && <p className="font-display font-bold text-earth-800 text-base mb-3 pb-2 border-b border-earth-200">{title}</p>}
       {rows.map(({ name, price }) => (
         <div key={name} className="flex justify-between items-center py-2 border-b border-earth-100 last:border-0">
           <span className="text-earth-700 text-sm font-semibold">{name}</span>
@@ -397,6 +380,7 @@ export default function RestaurantPage() {
   const [tab, setTab] = useState<"food" | "drink">("food");
   const [foodCat, setFoodCat] = useState("appetizers");
   const [drinkCat, setDrinkCat] = useState("drinks-coffee");
+  const { t } = useLanguage();
 
   const heroRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
@@ -419,15 +403,15 @@ export default function RestaurantPage() {
           <motion.div style={{ opacity: heroOpacity }} className="relative z-20 w-full max-w-7xl mx-auto px-6 lg:px-12 pb-14">
             <motion.span initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
               className="text-farm-300 text-xs uppercase tracking-[0.25em] font-bold mb-3 flex items-center gap-2">
-              <span className="w-8 h-px bg-farm-400" />Restaurant Menu
+              <span className="w-8 h-px bg-farm-400" />{t.restaurant.heroLabel}
             </motion.span>
             <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}
               className="font-display font-black text-white text-4xl lg:text-6xl">
-              Menu Lengkap
+              {t.restaurant.heroTitle}
             </motion.h1>
             <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
               className="text-white/70 mt-3 text-base">
-              Open Kitchen · Wood-Fire Oven · Berastagi, Sumatera Utara
+              {t.restaurant.heroSub}
             </motion.p>
           </motion.div>
           <div className="absolute bottom-0 inset-x-0 z-20">
@@ -442,19 +426,19 @@ export default function RestaurantPage() {
           <div className="max-w-7xl mx-auto px-4 lg:px-12 pt-8">
             {/* Food / Drink toggle */}
             <div className="flex gap-3 mb-6 flex-wrap">
-              {(["food", "drink"] as const).map((t) => (
+              {(["food", "drink"] as const).map((tabKey) => (
                 <motion.button
-                  key={t}
-                  onClick={() => setTab(t)}
+                  key={tabKey}
+                  onClick={() => setTab(tabKey)}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   className={`px-6 py-2.5 rounded-full text-sm font-bold transition-all ${
-                    tab === t
+                    tab === tabKey
                       ? "bg-farm-500 text-white shadow-lg shadow-farm-500/25"
                       : "bg-white text-earth-700 hover:bg-farm-50"
                   }`}
                 >
-                  {t === "food" ? "🍽 Makanan" : "🥤 Minuman"}
+                  {tabKey === "food" ? t.restaurant.tabFood : t.restaurant.tabDrink}
                 </motion.button>
               ))}
             </div>
@@ -467,35 +451,21 @@ export default function RestaurantPage() {
                     {tab === "food" ? (
                       <motion.div key="food-cats" initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="flex gap-2 min-w-max">
                         {foodCategories.map((c) => (
-                          <button
-                            key={c.id}
-                            onClick={() => setFoodCat(c.id)}
-                            className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all ${
-                              foodCat === c.id ? "bg-farm-500 text-white" : "bg-white text-earth-700 hover:bg-farm-50"
-                            }`}
-                          >
+                          <button key={c.id} onClick={() => setFoodCat(c.id)}
+                            className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all ${foodCat === c.id ? "bg-farm-500 text-white" : "bg-white text-earth-700 hover:bg-farm-50"}`}>
                             {c.label}
                           </button>
                         ))}
-                        <button
-                          onClick={() => setFoodCat("take-home")}
-                          className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all ${
-                            foodCat === "take-home" ? "bg-farm-500 text-white" : "bg-white text-earth-700 hover:bg-farm-50"
-                          }`}
-                        >
+                        <button onClick={() => setFoodCat("take-home")}
+                          className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all ${foodCat === "take-home" ? "bg-farm-500 text-white" : "bg-white text-earth-700 hover:bg-farm-50"}`}>
                           Take Home
                         </button>
                       </motion.div>
                     ) : (
                       <motion.div key="drink-cats" initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="flex gap-2 min-w-max">
                         {drinkCategories.map((c) => (
-                          <button
-                            key={c.id}
-                            onClick={() => setDrinkCat(c.id)}
-                            className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all ${
-                              drinkCat === c.id ? "bg-farm-500 text-white" : "bg-white text-earth-700 hover:bg-farm-50"
-                            }`}
-                          >
+                          <button key={c.id} onClick={() => setDrinkCat(c.id)}
+                            className={`px-4 py-2 rounded-full text-xs font-bold whitespace-nowrap transition-all ${drinkCat === c.id ? "bg-farm-500 text-white" : "bg-white text-earth-700 hover:bg-farm-50"}`}>
                             {c.label}
                           </button>
                         ))}
@@ -513,8 +483,8 @@ export default function RestaurantPage() {
                   {foodCat === "take-home" ? (
                     <>
                       <div className="mb-8">
-                        <h2 className="font-display font-black text-earth-900 text-2xl mb-1">Take Home</h2>
-                        <p className="text-earth-500 text-sm">Cheese, jams, paste & frozen food</p>
+                        <h2 className="font-display font-black text-earth-900 text-2xl mb-1">{t.restaurant.takeHomeTitle}</h2>
+                        <p className="text-earth-500 text-sm">{t.restaurant.takeHomeSub}</p>
                       </div>
                       <TakeHomeSection />
                     </>
@@ -553,7 +523,6 @@ export default function RestaurantPage() {
                     <p className="text-earth-500 text-sm">{currentDrink.sub}</p>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-                    {/* Image cards */}
                     {currentDrink.imgItems.map((item) => (
                       <motion.div key={item.name} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow">
                         <div className="relative aspect-[4/3] overflow-hidden bg-earth-200">
@@ -571,7 +540,6 @@ export default function RestaurantPage() {
                         </div>
                       </motion.div>
                     ))}
-                    {/* List cards */}
                     {currentDrink.lists.map((list) => (
                       <PriceList key={list.title || list.rows[0].name} rows={list.rows} title={list.title} />
                     ))}
@@ -587,32 +555,31 @@ export default function RestaurantPage() {
           <div className="max-w-4xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <AnimatedSection direction="left">
-                <span className="text-farm-300 text-xs uppercase tracking-[0.25em] font-bold mb-3 block">Book Your Table</span>
-                <h2 className="font-display font-black text-white text-4xl mb-4">Reservasi Meja</h2>
-                <p className="text-farm-200 text-base leading-relaxed mb-6">Untuk grup lebih dari 8 orang, hubungi kami langsung via WhatsApp agar kami dapat menyiapkan pengalaman terbaik untuk Anda.</p>
+                <span className="text-farm-300 text-xs uppercase tracking-[0.25em] font-bold mb-3 block">{t.restaurant.reserveLabel}</span>
+                <h2 className="font-display font-black text-white text-4xl mb-4">{t.restaurant.reserveTitle}</h2>
+                <p className="text-farm-200 text-base leading-relaxed mb-6">{t.restaurant.reserveDesc}</p>
                 <div className="space-y-3 text-farm-200 text-sm">
-                  <div className="flex items-center gap-3"><span className="text-farm-400">🕐</span>Senin–Minggu · 10.00–20.00 (last order 19.00)</div>
-                  <div className="flex items-center gap-3"><span className="text-farm-400">📞</span>+62 821-6259-9980</div>
+                  <div className="flex items-center gap-3"><span className="text-farm-400">🕐</span>{t.restaurant.reserveHours}</div>
+                  <div className="flex items-center gap-3"><span className="text-farm-400">📞</span>{t.restaurant.reservePhone}</div>
                 </div>
                 <motion.div animate={{ y: [0, -8, 0] }} transition={{ duration: 3, repeat: Infinity }} className="mt-8 hidden lg:block">
-                  <Image src="/images/mascot/cow_mascot_apron.svg" alt="Maskot" width={100} height={100} />
+                  <Image src="/images/mascot/cow_mascot_apron.svg" alt="Mascot" width={100} height={100} />
                 </motion.div>
               </AnimatedSection>
               <AnimatedSection direction="right" className="bg-white rounded-3xl p-6 lg:p-8 shadow-2xl">
-                <h3 className="font-display font-bold text-earth-900 text-xl mb-5">Kirim Pesan Reservasi</h3>
+                <h3 className="font-display font-bold text-earth-900 text-xl mb-5">{t.restaurant.reserveFormTitle}</h3>
                 <div className="space-y-4">
-                  <input type="text" placeholder="Nama Anda" className="w-full border border-earth-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-farm-400" />
+                  <input type="text" placeholder={t.restaurant.reserveNamePh} className="w-full border border-earth-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-farm-400" />
                   <div className="grid grid-cols-2 gap-3">
                     <input type="date" className="w-full border border-earth-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-farm-400" />
                     <select className="w-full border border-earth-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-farm-400">
-                      {["10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00"].map(t => <option key={t}>{t}</option>)}
+                      {["10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00"].map(time => <option key={time}>{time}</option>)}
                     </select>
                   </div>
                   <select className="w-full border border-earth-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-farm-400">
-                    <option>1–2 orang</option><option>3–4 orang</option><option>5–6 orang</option>
-                    <option>7–8 orang</option><option>Lebih dari 8 (grup)</option>
+                    {t.restaurant.guestOptions.map((opt) => <option key={opt}>{opt}</option>)}
                   </select>
-                  <textarea rows={2} placeholder="Alergi, perayaan, preferensi meja..." className="w-full border border-earth-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-farm-400 resize-none" />
+                  <textarea rows={2} placeholder={t.restaurant.reserveNotePh} className="w-full border border-earth-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-farm-400 resize-none" />
                   <motion.a
                     href="https://wa.me/6282162599980"
                     target="_blank" rel="noopener noreferrer"
@@ -620,7 +587,7 @@ export default function RestaurantPage() {
                     className="w-full bg-farm-500 hover:bg-farm-400 text-white font-bold py-3.5 rounded-full flex items-center justify-center gap-2 transition-colors cursor-pointer"
                   >
                     <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                    Kirim via WhatsApp
+                    {t.restaurant.reserveSend}
                   </motion.a>
                 </div>
               </AnimatedSection>

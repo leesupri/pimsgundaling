@@ -2,43 +2,44 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { useInView } from "framer-motion";
-
-const footerLinks = [
-  {
-    heading: "Menu",
-    items: [
-      { label: "Appetizer", href: "/restaurant#appetizers" },
-      { label: "Taste of Karo", href: "/restaurant#karo" },
-      { label: "Pizza & Pasta", href: "/restaurant#pizza" },
-      { label: "Desserts", href: "/restaurant#desserts" },
-      { label: "Gelato", href: "/restaurant#gelato" },
-    ],
-  },
-  {
-    heading: "Experience",
-    items: [
-      { label: "Farm Tour", href: "/farm" },
-      { label: "Field Trip", href: "/farm#fieldtrip" },
-      { label: "Cheese Room", href: "/farm#cheese" },
-      { label: "Promo & Shop", href: "/promo" },
-    ],
-  },
-  {
-    heading: "Gundaling",
-    items: [
-      { label: "Our Story", href: "/about" },
-      { label: "Reservasi", href: "/restaurant#reservation" },
-      { label: "Kontak", href: "/contact" },
-    ],
-  },
-];
+import { useLanguage } from "@/lib/i18n";
 
 export default function Footer() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
+  const { t } = useLanguage();
+
+  const footerLinks = [
+    {
+      heading: "Menu",
+      items: [
+        { label: "Appetizer", href: "/restaurant#appetizers" },
+        { label: "Taste of Karo", href: "/restaurant#karo" },
+        { label: "Pizza & Pasta", href: "/restaurant#pizza" },
+        { label: "Desserts", href: "/restaurant#desserts" },
+        { label: "Gelato", href: "/restaurant#gelato" },
+      ],
+    },
+    {
+      heading: "Experience",
+      items: [
+        { label: "Farm Tour", href: "/farm" },
+        { label: "Field Trip", href: "/farm#fieldtrip" },
+        { label: "Cheese Room", href: "/farm#cheese" },
+        { label: "Promo & Shop", href: "/promo" },
+      ],
+    },
+    {
+      heading: "Gundaling",
+      items: [
+        { label: "Our Story", href: "/about" },
+        { label: t.footer.reserve, href: "/restaurant#reservation" },
+        { label: t.footer.contact, href: "/contact" },
+      ],
+    },
+  ];
 
   return (
     <footer ref={ref} className="bg-farm-900 text-white">
@@ -78,13 +79,12 @@ export default function Footer() {
               className="brightness-0 invert h-14 w-auto mb-5"
             />
             <p className="text-farm-200 text-sm leading-relaxed mb-5 max-w-xs">
-              Farm to table di Dataran Tinggi Karo, Berastagi, Sumatera Utara.
-              Dari ladang kami ke meja Anda sejak 2005.
+              {t.footer.tagline}
             </p>
             <div className="flex flex-wrap gap-2 mb-6">
-              <span className="bg-farm-700 text-farm-200 text-xs px-3 py-1 rounded-full">🌿 Organic</span>
+              <span className="bg-farm-700 text-farm-200 text-xs px-3 py-1 rounded-full">{t.footer.organic}</span>
               <span className="bg-farm-700 text-farm-200 text-xs px-3 py-1 rounded-full">Est. 2005</span>
-              <span className="bg-farm-700 text-farm-200 text-xs px-3 py-1 rounded-full">Farm to Table</span>
+              <span className="bg-farm-700 text-farm-200 text-xs px-3 py-1 rounded-full">{t.footer.farmToTable}</span>
             </div>
             <div className="flex gap-4">
               {[
@@ -116,7 +116,7 @@ export default function Footer() {
               <h4 className="font-display font-bold text-white text-base mb-4">{heading}</h4>
               <ul className="space-y-2.5">
                 {items.map(({ label, href }) => (
-                  <li key={label}>
+                  <li key={href}>
                     <Link
                       href={href}
                       className="text-farm-300 hover:text-white text-sm transition-colors"
@@ -132,12 +132,8 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="border-t border-white/10 mt-14 pt-6 flex flex-col md:flex-row items-center justify-between gap-3">
-          <p className="text-farm-400 text-xs">
-            © 2025 Gundaling Farmstead — PT. Putra Indo Mandiri Sejahtera
-          </p>
-          <p className="text-farm-500 text-xs">
-            Jl. Jamin Ginting, Desa Jaranguda, Berastagi 22158 · 10.00–20.00 daily
-          </p>
+          <p className="text-farm-400 text-xs">{t.footer.copyright}</p>
+          <p className="text-farm-500 text-xs">{t.footer.address}</p>
         </div>
       </div>
     </footer>
