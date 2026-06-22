@@ -1,5 +1,0 @@
-User-agent: *
-Allow: /
-Disallow: /design-system/
-
-Sitemap: https://pimsgundaling.com/sitemap.xml
