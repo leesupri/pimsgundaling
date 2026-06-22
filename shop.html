@@ -1,0 +1,115 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Online Shop | Gundaling Farmstead Berastagi</title>
+  <meta name="description" content="Toko online Gundaling Farmstead — keju artisan, susu segar, gelato, selai buah, dan produk farm untuk dikirim ke seluruh Indonesia.">
+  <link rel="canonical" href="https://pimsgundaling.com/shop.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={theme:{extend:{colors:{'farm':{50:'#f0f7ef',100:'#d8ecda',200:'#b3d9b7',300:'#82be89',400:'#4a9c56',500:'#2C5F2D',600:'#1E4B1F',700:'#1E2F1C',800:'#162318',900:'#0e1810'},'earth':{50:'#fdf8f3',100:'#f9f1e7',200:'#F9F6EF',300:'#E6D5B8',400:'#c4a882',500:'#a0845e',600:'#7B4B2D',700:'#5c3620',800:'#3d2414',900:'#1f120a'}},fontFamily:{'display':['"Playfair Display"','Georgia','serif'],'body':['Nunito','sans-serif']}}}}</script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box}body{font-family:'Nunito',sans-serif;color:#1f120a;overflow-x:hidden}
+    :focus-visible{outline:2px solid #4a9c56;outline-offset:2px}
+    @media(prefers-reduced-motion:no-preference){
+      @keyframes floatMascot{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+      .mascot-float{animation:floatMascot 3.6s ease-in-out infinite}
+      @keyframes walkAcross{from{left:-120px}to{left:100vw}}
+      @keyframes bodyBob{0%,100%{transform:scaleY(1)}50%{transform:scaleY(1.03)}}
+      .mascot-walk{position:absolute;bottom:.375rem;animation:walkAcross 14s linear infinite}
+      .mascot-walk img{transform-origin:bottom center;animation:bodyBob 0.4s ease-in-out infinite alternate}
+    }
+    ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#f0f7ef}::-webkit-scrollbar-thumb{background:#2C5F2D;border-radius:3px}
+  </style>
+</head>
+<body class="font-body bg-earth-200">
+
+<!-- NAV -->
+<nav x-data="{scrolled:false,menuOpen:false,init(){window.addEventListener('scroll',()=>{this.scrolled=window.scrollY>60},{passive:true})}}"
+     :class="scrolled?'bg-farm-700/95 backdrop-blur-md shadow-lg py-2':'bg-farm-700 py-4'"
+     class="fixed top-0 w-full z-50 transition-all duration-300 px-6 lg:px-12 flex items-center justify-between">
+  <a href="index.html"><img src="images/logos/Logo_GUNDALING_2-color_tall_on-white.png" alt="Gundaling Farmstead" class="h-12 brightness-0 invert" :style="scrolled?'height:2.5rem':'height:3rem'"></a>
+  <ul class="hidden lg:flex items-center gap-8">
+    <li><a href="index.html"      class="text-white/75 hover:text-white font-semibold text-sm tracking-wide uppercase transition-colors">Home</a></li>
+    <li><a href="Restaurant.html" class="text-white/75 hover:text-white font-semibold text-sm tracking-wide uppercase transition-colors">Restaurant</a></li>
+    <li><a href="farm.html"       class="text-white/75 hover:text-white font-semibold text-sm tracking-wide uppercase transition-colors">Farm</a></li>
+    <li><a href="promo.html"      class="text-white/75 hover:text-white font-semibold text-sm tracking-wide uppercase transition-colors">Promo &amp; Shop</a></li>
+    <li><a href="about.html"      class="text-white/75 hover:text-white font-semibold text-sm tracking-wide uppercase transition-colors">About</a></li>
+    <li><a href="contact.html"    class="text-white/75 hover:text-white font-semibold text-sm tracking-wide uppercase transition-colors">Contact</a></li>
+  </ul>
+  <div class="flex items-center gap-3">
+    <button @click="menuOpen=!menuOpen" class="lg:hidden text-white p-2 cursor-pointer" aria-label="Menu">
+      <svg x-show="!menuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      <svg x-show="menuOpen"  class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <div x-show="menuOpen" x-transition:enter="transition ease-out duration-250" x-transition:enter-start="opacity-0 -translate-y-3" x-transition:enter-end="opacity-100 translate-y-0" class="absolute top-full left-0 w-full bg-farm-700 shadow-2xl lg:hidden">
+    <ul class="flex flex-col px-6 py-5 gap-4">
+      <li><a href="index.html"      @click="menuOpen=false" class="block text-white/80 font-semibold text-sm tracking-wide uppercase">Home</a></li>
+      <li><a href="Restaurant.html" @click="menuOpen=false" class="block text-white/80 font-semibold text-sm tracking-wide uppercase">Restaurant</a></li>
+      <li><a href="farm.html"       @click="menuOpen=false" class="block text-white/80 font-semibold text-sm tracking-wide uppercase">Farm</a></li>
+      <li><a href="promo.html"      @click="menuOpen=false" class="block text-white/80 font-semibold text-sm tracking-wide uppercase">Promo &amp; Shop</a></li>
+      <li><a href="about.html"      @click="menuOpen=false" class="block text-white/80 font-semibold text-sm tracking-wide uppercase">About</a></li>
+      <li><a href="contact.html"    @click="menuOpen=false" class="block text-white/80 font-semibold text-sm tracking-wide uppercase">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- COMING SOON CONTENT -->
+<div class="min-h-screen flex items-center justify-center px-6 py-32">
+  <div class="max-w-lg w-full text-center">
+    <img src="images/mascot/cow_mascot_apron.svg" alt="Maskot Gundaling" class="mascot-float h-44 w-auto mx-auto mb-8 select-none" draggable="false" loading="lazy">
+
+    <div class="bg-white rounded-3xl shadow-2xl p-8 lg:p-10">
+      <div class="inline-flex items-center gap-2 bg-farm-100 text-farm-600 text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-full mb-5">
+        <span class="w-2 h-2 rounded-full bg-farm-400 animate-pulse inline-block"></span>
+        Segera Hadir
+      </div>
+      <h1 class="font-display text-3xl lg:text-4xl font-bold text-earth-900 mb-4">Online Shop<br>Gundaling Farmstead</h1>
+      <p class="font-body text-earth-600 text-base leading-relaxed mb-8">
+        Kami sedang membangun toko online untuk memudahkan Anda memesan keju artisan, produk susu segar, selai buah, dan produk farm kami dari rumah. Segera hadir!
+      </p>
+
+      <div class="grid grid-cols-2 gap-3 mb-8 text-left">
+        <div class="bg-earth-50 rounded-xl p-3">
+          <p class="font-body text-earth-500 text-xs font-bold uppercase tracking-wide mb-1">Akan Tersedia</p>
+          <ul class="space-y-1">
+            <li class="font-body text-earth-700 text-xs flex items-center gap-1.5"><span class="text-farm-500">✓</span>Keju Artisan</li>
+            <li class="font-body text-earth-700 text-xs flex items-center gap-1.5"><span class="text-farm-500">✓</span>Susu Segar</li>
+            <li class="font-body text-earth-700 text-xs flex items-center gap-1.5"><span class="text-farm-500">✓</span>Gelato Cup</li>
+          </ul>
+        </div>
+        <div class="bg-earth-50 rounded-xl p-3">
+          <p class="font-body text-earth-500 text-xs font-bold uppercase tracking-wide mb-1">Dan Juga</p>
+          <ul class="space-y-1">
+            <li class="font-body text-earth-700 text-xs flex items-center gap-1.5"><span class="text-farm-500">✓</span>Selai Buah Farm</li>
+            <li class="font-body text-earth-700 text-xs flex items-center gap-1.5"><span class="text-farm-500">✓</span>Bumbu Karo</li>
+            <li class="font-body text-earth-700 text-xs flex items-center gap-1.5"><span class="text-farm-500">✓</span>Hamper Gift Box</li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="font-body text-earth-500 text-sm mb-5">Sementara itu, pesan langsung via WhatsApp:</p>
+      <div class="flex flex-col gap-3">
+        <a href="https://wa.me/6282162599980?text=Halo%2C%20saya%20ingin%20memesan%20produk%20Gundaling%20Farmstead"
+           target="_blank" rel="noopener"
+           class="inline-flex items-center justify-center gap-2 bg-[#25D366] text-white font-bold px-6 py-3.5 rounded-full transition-all hover:opacity-90 cursor-pointer">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Pesan via WhatsApp
+        </a>
+        <a href="promo.html#shop" class="inline-flex items-center justify-center gap-2 border-2 border-farm-500 text-farm-600 hover:bg-farm-500 hover:text-white font-bold px-6 py-3.5 rounded-full transition-all cursor-pointer">
+          Lihat Produk di Promo Page →
+        </a>
+      </div>
+    </div>
+
+    <p class="font-body text-earth-500 text-xs mt-5">© 2025 Gundaling Farmstead — PT. Putra Indo Mandiri Sejahtera</p>
+  </div>
+</div>
+
+</body>
+</html>
